@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/tab_home"
+        android:icon="@drawable/baseline_home_24"
+        android:title="@string/home" />
+    <item
+        android:id="@+id/tab_wallet"
+        android:iconTint="@color/gold"
+        android:icon="@drawable/ic_baseline_account_balance_wallet_24"
+        android:title="@string/wallet" />
+    <item
+        android:id="@+id/tab_profile"
+        android:iconTint="@color/gold"
+        android:icon="@drawable/baseline_person_24"
+        android:title="@string/profile" />
+</menu>

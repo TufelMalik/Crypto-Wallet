@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Fragments.HomeFragment"
+    tools:ignore="ExtraText">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/black"
+        >
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchViewHome"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Crypto Wallet"
+            android:textAlignment="viewStart"
+            android:layout_marginTop="7dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="4dp"
+            android:paddingLeft="10dp"
+            android:background="@drawable/corner"
+            android:backgroundTint="@color/purple_700"
+            android:clickable="true"
+            android:outlineAmbientShadowColor="@color/white"
+            app:queryHint="Search Coins..." />
+    </LinearLayout>
+
+    />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/homeRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_marginTop="49dp"
+        tools:listitem="@layout/home_recycler_layout"
+        android:layout_height="wrap_content" />
+</FrameLayout>
