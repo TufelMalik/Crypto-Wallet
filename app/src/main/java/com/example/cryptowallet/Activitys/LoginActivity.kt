@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.cryptowallet.MainActivity
 import com.example.cryptowallet.databinding.ActivityLoginBinding
+import com.google.firebase.database.FirebaseDatabase
 
-class LoginActivity : AppCompatActivity() {
+class
+LoginActivity : AppCompatActivity() {
     val binding by lazy{
         ActivityLoginBinding.inflate(layoutInflater)
     }
@@ -14,6 +16,8 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         supportActionBar?.hide()
+
+
         binding.btnGotoReg.setOnClickListener {
             startActivity(Intent(this,RegistrationActivity::class.java))
         }

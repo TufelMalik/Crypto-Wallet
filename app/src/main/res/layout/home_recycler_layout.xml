@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_marginBottom="2dp"
-    android:background="@color/black"
+    android:layout_width="wrap_content"
+    android:layout_margin="4dp"
+    android:backgroundTint="#269DBC"
+    app:cardCornerRadius="10dp"
+    android:layout_gravity="center_vertical"
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="402dp"
-        android:layout_height="121dp"
-        android:backgroundTint="@color/black"
+        android:layout_width="190dp"
+        android:layout_height="251dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,120 +21,97 @@
         app:layout_constraintVertical_bias="0.5">
 
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="376dp"
-            android:layout_height="66dp"
-            android:orientation="horizontal"
+        <ImageView
+            android:id="@+id/idCoinImageLay"
+            android:layout_width="49dp"
+            android:layout_height="49dp"
+            android:layout_margin="3dp"
+            android:background="@drawable/baseline_person_24"
+            android:backgroundTint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.503"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.098" />
 
-            <ImageView
-                android:id="@+id/idCoinImageLay"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/baseline_person_24"
-                android:backgroundTint="@color/white" />
-
-            <TextView
-                android:id="@+id/idCoinNameLay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="17dp"
-                android:layout_marginTop="23dp"
-                android:maxLength="13"
-                android:text="Coin Name"
-                android:textColor="@color/white"
-                android:textSize="19dp"
-                android:textStyle="bold" />
-
-
-            <TextView
-                android:id="@+id/idCoinLivePriceLay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="137dp"
-                android:layout_marginTop="25dp"
-                android:text="9999"
-                android:textColor="@color/white"
-                android:textSize="16dp"
-                android:textStyle="bold" />
-
-
-        </LinearLayout>
+        <TextView
+            android:id="@+id/idCoinLivePriceLay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="152dp"
+            android:textStyle="bold"
+            android:fontFamily="@font/aref_ruqaa"
+            android:text="9999"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/idBuyCoinLay"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.503"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
         <Button
             android:id="@+id/idBuyCoinLay"
-            android:layout_width="80dp"
-            android:layout_height="30dp"
-            android:layout_marginEnd="36dp"
+            android:layout_width="120dp"
+            android:layout_height="32dp"
             android:background="@drawable/corner"
             android:backgroundTint="@color/green"
             android:text="Buy"
+            android:textSize="19dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.49"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.824" />
-
-        <TextView
-            android:id="@+id/idCoinDetailLay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="80dp"
-            android:text="Coin"
-            android:textSize="13dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/dbcjds"
-            app:layout_constraintHorizontal_bias="0.09"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-            app:layout_constraintVertical_bias="0.027" />
-
-        <TextView
-            android:id="@+id/dbcjds"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxLength="8"
-            android:text="||"
-            android:layout_marginLeft="3dp"
-            android:layout_marginRight="3dp"
-            android:textSize="14dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.293"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.911" />
 
         <TextView
             android:id="@+id/idCoinSortNameLay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxLength="8"
-            android:text="900"
             android:layout_marginLeft="11dp"
-            android:textSize="14dp"
+            android:fontFamily="@font/amethysta"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="116dp"
+            android:maxLength="8"
+            android:text="BNB"
+            android:textSize="11dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.335"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/idCoinNameLay" />
 
         <CheckBox
             android:id="@+id/idSaveCoinLay"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
-            android:layout_marginEnd="152dp"
+            android:layout_marginEnd="12dp"
             android:button="@drawable/fav_coin__drawable"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.841" />
+            app:layout_constraintVertical_bias="0.069" />
+
+        <TextView
+            android:id="@+id/idCoinNameLay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/amethysta"
+            android:gravity="center_horizontal"
+            android:maxLength="10"
+            android:text="Coin Nafbdjbkdkme"
+            android:textColor="@color/white"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/idCoinLivePriceLay"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/idCoinImageLay"
+            app:layout_constraintVertical_bias="0.181" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

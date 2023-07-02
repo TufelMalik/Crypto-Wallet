@@ -20,18 +20,22 @@ import com.example.cryptowallet.Fragments.HomeFragment
 import com.example.cryptowallet.Fragments.ProfileFragment
 import com.example.cryptowallet.Fragments.WalletFragment
 import com.example.cryptowallet.databinding.ActivityMainBinding
+import com.google.firebase.database.FirebaseDatabase
 import nl.joery.animatedbottombar.AnimatedBottomBar
 
 class MainActivity : AppCompatActivity() {
     val binding by lazy{
         ActivityMainBinding.inflate(layoutInflater)
     }
+
     private lateinit var searchView: SearchView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+
 
         // By Default Home Fragement
         supportFragmentManager.beginTransaction()

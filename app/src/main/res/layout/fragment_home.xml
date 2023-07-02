@@ -1,41 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Fragments.HomeFragment"
-    tools:ignore="ExtraText">
+    tools:context=".Fragments.HomeFragment">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:orientation="vertical"
         android:layout_height="wrap_content"
-        android:background="@android:color/black"
-        >
+        android:background="@android:color/black">
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchViewHome"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="Crypto Wallet"
-            android:textAlignment="viewStart"
-            android:layout_marginTop="7dp"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="7dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="4dp"
-            android:paddingLeft="10dp"
             android:background="@drawable/corner"
             android:backgroundTint="@color/purple_700"
             android:clickable="true"
             android:outlineAmbientShadowColor="@color/white"
-            app:queryHint="Search Coins..." />
-    </LinearLayout>
+            android:paddingLeft="10dp"
+            android:text="Crypto Wallet"
+            android:textAlignment="viewStart"
+            app:queryHint="Search Coins..." >
 
-    />
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/homeRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_marginTop="49dp"
-        tools:listitem="@layout/home_recycler_layout"
-        android:layout_height="wrap_content" />
+        </androidx.appcompat.widget.SearchView>
+
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            android:layout_margin="30dp"
+            >
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="162dp"
+                android:scaleType="centerCrop"
+
+                android:src="@drawable/banner5" />
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/homeRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.466"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:listitem="@layout/home_recycler_layout" />
+
+    </LinearLayout>
+    </ScrollView>
 </FrameLayout>
