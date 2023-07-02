@@ -1,63 +1,42 @@
 {
   "project_info": {
-    "project_number": "115544629172",
-    "firebase_url": "https://mydayri-1fe07-default-rtdb.firebaseio.com",
-    "project_id": "mydayri-1fe07",
-    "storage_bucket": "mydayri-1fe07.appspot.com"
+    "project_number": "130988879117",
+    "firebase_url": "https://cryptowallet-1e9e8-default-rtdb.firebaseio.com",
+    "project_id": "cryptowallet-1e9e8",
+    "storage_bucket": "cryptowallet-1e9e8.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:115544629172:android:bc33e5eeaacf0a026a1ce1",
+        "mobilesdk_app_id": "1:130988879117:android:9ca36f6cbd98a3746e1444",
         "android_client_info": {
           "package_name": "com.example.cryptowallet"
         }
       },
       "oauth_client": [
         {
-          "client_id": "115544629172-5n8mp6ctkjipvm6itq5q05qu08dheufv.apps.googleusercontent.com",
+          "client_id": "130988879117-3o9oq5an5b9b5mbcl208sbi5vnatkunh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cryptowallet",
+            "certificate_hash": "054cd9615504368eb1b15ddd70147ca61dd598f5"
+          }
+        },
+        {
+          "client_id": "130988879117-i72f15jgbq96til7v6aimr5pkqj6n11m.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDb72sgvfaVIxNn57KFB-LnXCHqwmBXaNk"
+          "current_key": "AIzaSyADbYj-8Oqfc3z3hyP6_5kk3iddbWpOJuU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "115544629172-5n8mp6ctkjipvm6itq5q05qu08dheufv.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:115544629172:android:75be6748dc3521a06a1ce1",
-        "android_client_info": {
-          "package_name": "com.example.mydayri"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "115544629172-5n8mp6ctkjipvm6itq5q05qu08dheufv.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDb72sgvfaVIxNn57KFB-LnXCHqwmBXaNk"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "115544629172-5n8mp6ctkjipvm6itq5q05qu08dheufv.apps.googleusercontent.com",
+              "client_id": "130988879117-i72f15jgbq96til7v6aimr5pkqj6n11m.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
