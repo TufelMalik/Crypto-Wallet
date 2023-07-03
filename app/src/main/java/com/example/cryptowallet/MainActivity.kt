@@ -31,6 +31,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var searchView: SearchView
 
 
+    override fun onBackPressed() {
+        finishAffinity()
+        super.onBackPressed()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)

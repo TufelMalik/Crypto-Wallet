@@ -6,7 +6,7 @@
     <item
         android:id="@+id/tab_wallet"
         android:iconTint="@color/gold"
-        android:icon="@drawable/ic_baseline_account_balance_wallet_24"
+        android:icon="@drawable/baseline_account_balance_wallet_24"
         android:title="@string/wallet" />
     <item
         android:id="@+id/tab_profile"
