@@ -8,6 +8,7 @@
     tools:context=".Activitys.LoginActivity">
 
 
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="411dp"

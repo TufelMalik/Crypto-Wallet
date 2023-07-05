@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Toast
 import com.example.cryptowallet.DataClasses.Users
 import com.example.cryptowallet.MainActivity
+import com.example.cryptowallet.R
 import com.example.cryptowallet.databinding.ActivityRegistrationBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -58,8 +59,8 @@ class RegistrationActivity : AppCompatActivity() {
         )
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    binding.circularProgressBarReg.visibility = View.GONE
                     addUserDataOnDB(name,email,pass)
+                    binding.circularProgressBarReg.visibility = View.GONE
                     startActivity(Intent(this@RegistrationActivity, MainActivity::class.java))
                 } else {
                     binding.circularProgressBarReg.visibility = View.GONE
@@ -70,6 +71,7 @@ class RegistrationActivity : AppCompatActivity() {
                 Toast.makeText(this@RegistrationActivity, "Registration Failed.\nPleas try again later...: ${exception.message}", Toast.LENGTH_SHORT).show()
                 Log.e("Firebase", "Failed to save data", exception)
                 binding.circularProgressBarReg.visibility = View.GONE
+
             }
 
     }

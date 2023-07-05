@@ -35,16 +35,17 @@ class CoinAdapter(private val context : Context,private val coinList: List<Crypt
 
         holder.coinName.text = item.name
         holder.coinSortName.text = item.symbol
-        holder.coinLivePrice.text = item.quotes[0].price.toString()
+        holder.coinLivePrice.text = item.quotes[0].percentChange1h.toString()
+//        holder.coinLivePrice.text = item.quotes[0].price.toString()
         Glide.with(context).load("https://s2.coinmarketcap.com/static/img/coins/64x64/"+item.id+".png")
             .thumbnail(Glide.with(context).load(R.drawable.loading1)).into(holder.coinImg)
 
         if(item.quotes[0].percentChange24h > 0){
             holder.coinLivePrice.setTextColor(context.resources.getColor(R.color.green))
-            holder.coinLivePrice.text = "+ ${String.format("%.2f", item.quotes[0].percentChange24h)} %"
+            holder.coinLivePrice.text = "+ ${String.format("%.2f", item.quotes[0].percentChange1h)} %"
         }else{
             holder.coinLivePrice.setTextColor(context.resources.getColor(R.color.red))
-            holder.coinLivePrice.text = "  ${String.format("%.2f", item.quotes[0].percentChange24h)} %"
+            holder.coinLivePrice.text = " ${String.format("%.2f", item.quotes[0].percentChange1h)} %"
         }
 
     }

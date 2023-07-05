@@ -4,16 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/regBg"
     android:background="@color/black"
     tools:context=".Activitys.RegistrationActivity">
 
-    <com.github.ybq.android.spinkit.SpinKitView
+
+    <ProgressBar
         android:id="@+id/circularProgressBarReg"
-        style="@style/SpinKitView.Large.Circle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="?android:attr/subtitleTextStyle"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_gravity="center"
-        app:SpinKit_Color="@color/green"
+        android:layout_marginTop="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

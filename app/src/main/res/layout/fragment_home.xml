@@ -4,7 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context=".Fragments.HomeFragment">
+
+    <ProgressBar
+        android:id="@+id/homeProgressBar"
+        style="?android:attr/subtitleTextStyle"
+        android:layout_width="50dp"
+        android:layout_marginTop="80dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -41,13 +51,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:cardCornerRadius="20dp"
-            android:layout_margin="30dp"
+            android:layout_margin="14dp"
             >
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="162dp"
                 android:scaleType="centerCrop"
-
                 android:src="@drawable/banner5" />
         </androidx.cardview.widget.CardView>
 
@@ -61,7 +70,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.466"
             app:layout_constraintStart_toStartOf="parent"
-            tools:listitem="@layout/home_recycler_layout" />
+            tools:listitem="@layout/home_recycler_layout" >
+
+        </androidx.recyclerview.widget.RecyclerView>
+
 
     </LinearLayout>
     </ScrollView>

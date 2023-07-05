@@ -57,6 +57,7 @@ LoginActivity : AppCompatActivity() {
         val email = binding.etEmailLogin.text.toString()
         val pass = binding.etPassLogin.text.toString()
 
+
         auth.signInWithEmailAndPassword(email,pass)
             .addOnCompleteListener {
                 if(it.isSuccessful){

@@ -21,25 +21,36 @@ import kotlinx.coroutines.withContext
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
+    private lateinit var dataList: MutableList<String>
+    private lateinit var filteredList: MutableList<String>
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        getCurrecyList()
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+        searchInRecyclerView()
+        getCurrecyList()
+
         return binding.root
     }
 
+    //  Search Coins in RecylerView....
+    private fun searchInRecyclerView() {
+
+
+    }
+
     private fun getCurrecyList() {
+        binding.homeProgressBar.visibility = View.VISIBLE
         lifecycleScope.launch(Dispatchers.IO) {
             val result = ApiUtilities.getInstace().create(ApiInterface::class.java).getMarketData()
 
             withContext(Dispatchers.Main) {
 
                 if (result != null) {
-
+                    binding.homeProgressBar.visibility = View.GONE
                     binding.homeRecyclerView.adapter = CoinAdapter(requireContext(), result.body()!!.data.cryptoCurrencyList)
                     Log.d("Tufel", result.body()!!.data.cryptoCurrencyList.toString())
                     setRVLayoutManger(resources.configuration.orientation)
@@ -61,7 +72,6 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
     }
 

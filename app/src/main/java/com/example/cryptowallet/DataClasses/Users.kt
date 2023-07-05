@@ -7,7 +7,8 @@ data class Users(
     var pass : String?,
     var bal : Double?,
     var uimg : String?,
-    var userTras : List<UserTrasnData>
+    var favCoinId : String?
+
 ){
 
     fun userAuth(userID: String?,name: String?,email: String?, pass: String?){
@@ -17,5 +18,5 @@ data class Users(
         this.pass = pass
     }
 
-    constructor(): this("","","","",0.0,"", emptyList())
+    constructor(): this("","","","",0.0,"","")
 }
