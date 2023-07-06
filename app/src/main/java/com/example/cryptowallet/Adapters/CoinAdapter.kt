@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +21,7 @@ class CoinAdapter(private val context : Context,private val coinList: List<Crypt
         val coinName: TextView = itemView.findViewById(R.id.idCoinNameLay)
         val coinSortName: TextView = itemView.findViewById(R.id.idCoinSortNameLay)
         val coinLivePrice: TextView = itemView.findViewById(R.id.idCoinLivePriceLay)
-//        val coinDetails: TextView = itemView.findViewById(R.id.idCoinDetailLay)
+        val coinFavCB: CheckBox = itemView.findViewById(R.id.idSaveCoinLay)
 
     }
 
@@ -40,7 +41,7 @@ class CoinAdapter(private val context : Context,private val coinList: List<Crypt
         Glide.with(context).load("https://s2.coinmarketcap.com/static/img/coins/64x64/"+item.id+".png")
             .thumbnail(Glide.with(context).load(R.drawable.loading1)).into(holder.coinImg)
 
-        if(item.quotes[0].percentChange24h > 0){
+        if(item.quotes[0].percentChange1h > 0){
             holder.coinLivePrice.setTextColor(context.resources.getColor(R.color.green))
             holder.coinLivePrice.text = "+ ${String.format("%.2f", item.quotes[0].percentChange1h)} %"
         }else{
