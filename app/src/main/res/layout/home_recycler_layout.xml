@@ -88,6 +88,7 @@
             android:id="@+id/idSaveCoinLay"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
+            android:checked="false"
             android:button="@drawable/fav_coin__drawable"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
