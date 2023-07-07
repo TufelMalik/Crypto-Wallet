@@ -18,5 +18,8 @@ data class CryptoCurrency(
     val slug: String,
     val symbol: String,
     val tags: List<String>,
+    var isChecked: Boolean,
     val totalSupply: Double
-)
+) {
+
+}
