@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Crypto Wallet</string>
     <!-- TODO: Remove or change this placeholder text -->
@@ -9,6 +10,5 @@
     <string name="_1h">1h</string>
     <string name="_4h">4h</string>
     <string name="_1d">1d</string>
-    <string name="_1w">1w</string>
     <string name="_1m">1m</string>
 </resources>

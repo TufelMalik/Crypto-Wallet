@@ -1,19 +1,15 @@
 package com.example.cryptowallet.Fragments
 
+import CoinAdapter
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cryptowallet.API.ApiInterface
 import com.example.cryptowallet.API.ApiUtilities
-import com.example.cryptowallet.Adapters.CoinAdapter
-import com.example.cryptowallet.DataClasses.CoinDataClass
-import com.example.cryptowallet.DataClasses.CryptoCurrency
-import com.example.cryptowallet.R
+import com.example.cryptowallet.Classes.Constants
 import com.example.cryptowallet.databinding.FragmentHomeBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -33,8 +29,11 @@ class HomeFragment : Fragment() {
         searchInRecyclerView()
         getCurrecyList()
 
+
         return binding.root
     }
+
+
 
     //  Search Coins in RecylerView....
     private fun searchInRecyclerView() {
@@ -45,15 +44,15 @@ class HomeFragment : Fragment() {
     private fun getCurrecyList() {
         binding.homeProgressBar.visibility = View.VISIBLE
         lifecycleScope.launch(Dispatchers.IO) {
-            val result = ApiUtilities.getInstace().create(ApiInterface::class.java).getMarketData()
+            val result = ApiUtilities.getInstace().create(ApiInterface::class.java).getMarketData(Constants.LAST_URL)
 
             withContext(Dispatchers.Main) {
 
                 if (result != null) {
                     binding.homeProgressBar.visibility = View.GONE
                     binding.homeRecyclerView.adapter = CoinAdapter(requireContext(), result.body()!!.data.cryptoCurrencyList)
-                    Log.d("Tufel", result.body()!!.data.cryptoCurrencyList.toString())
-                    setRVLayoutManger(resources.configuration.orientation)
+                   // Log.d("Tufel", result.body()!!.data.cryptoCurrencyList.toString())
+                    setRVLayoutOrientationManger(resources.configuration.orientation)
 
 
                 }
@@ -62,7 +61,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setRVLayoutManger(orientation: Int) {
+    private fun setRVLayoutOrientationManger(orientation: Int) {
         if(orientation == Configuration.ORIENTATION_LANDSCAPE){
             binding.homeRecyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
         }else if(orientation == Configuration.ORIENTATION_PORTRAIT){
