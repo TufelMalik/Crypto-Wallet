@@ -1,15 +1,20 @@
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cryptowallet.Activitys.DetailedActivity
 import com.example.cryptowallet.DataClasses.CryptoCurrency
+import com.example.cryptowallet.Fragments.HomeFragmentDirections
 import com.example.cryptowallet.R
 
 class CoinAdapter(private val context: Context, private val coinList: List<CryptoCurrency>) :
@@ -42,9 +47,10 @@ class CoinAdapter(private val context: Context, private val coinList: List<Crypt
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, DetailedActivity::class.java)
-            val coinId = item.id
-            intent.putExtra("coinID", coinId)
+            intent.putExtra("data",item)
             context.startActivity(intent)
+
+
         }
 
         Glide.with(context)

@@ -1,5 +1,8 @@
 package com.example.cryptowallet.DataClasses
 
+import android.os.Parcelable
+import java.io.Serializable
+
 data class CryptoCurrency(
     val auditInfoList: List<AuditInfo>,
     val circulatingSupply: Double,
@@ -20,6 +23,4 @@ data class CryptoCurrency(
     val tags: List<String>,
     var isChecked: Boolean,
     val totalSupply: Double
-) {
-
-}
+) : Serializable
