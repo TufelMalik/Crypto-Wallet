@@ -4,10 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_margin="4dp"
+    app:cardBackgroundColor="@color/white"
+    android:outlineAmbientShadowColor="@color/white"
     android:backgroundTint="@color/black"
     app:cardCornerRadius="10dp"
     android:layout_gravity="center_vertical"
     android:layout_height="wrap_content">
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="190dp"
@@ -19,7 +22,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5">
-
 
         <ImageView
             android:id="@+id/idCoinImageLay"
@@ -45,22 +47,18 @@
             android:text="9999"
             android:textColor="@color/white"
             android:textSize="20dp"
-            app:layout_constraintBottom_toTopOf="@+id/idBuyCoinLay"
+            app:layout_constraintBottom_toTopOf="@+id/idCoinPriceChangeLay"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.503"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
-        <Button
-            android:id="@+id/idBuyCoinLay"
-            android:layout_width="120dp"
-            android:layout_height="32dp"
+        <ImageView
+            android:id="@+id/idCoinPriceChangeLay"
+            android:layout_width="80dp"
+            android:layout_height="26dp"
             android:background="@drawable/corner"
-            android:backgroundTint="@color/green"
-            android:text="Buy"
-            android:textSize="19dp"
-            android:fontFamily="@font/amethysta"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.49"

@@ -1,7 +1,5 @@
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +24,7 @@ class CoinAdapter(private val context: Context, private val coinList: List<Crypt
         val coinSortName: TextView = itemView.findViewById(R.id.idCoinSortNameLay)
         val coinLivePrice: TextView = itemView.findViewById(R.id.idCoinLivePriceLay)
         val coinFavCB: CheckBox = itemView.findViewById(R.id.idSaveCoinLay)
+        val coinChangePrice : ImageView = itemView.findViewById(R.id.idCoinPriceChangeLay)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoinViewHolder {
@@ -47,10 +46,8 @@ class CoinAdapter(private val context: Context, private val coinList: List<Crypt
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, DetailedActivity::class.java)
-            intent.putExtra("data",item)
+            intent.putExtra("data", item.id)
             context.startActivity(intent)
-
-
         }
 
         Glide.with(context)
@@ -60,10 +57,21 @@ class CoinAdapter(private val context: Context, private val coinList: List<Crypt
 
         if (item.quotes[0].percentChange1h > 0) {
             holder.coinLivePrice.setTextColor(context.resources.getColor(R.color.green))
-            holder.coinLivePrice.text = "+ ${String.format("%.2f", item.quotes[0].percentChange1h)} %"
+            holder.coinLivePrice.text =
+                "+ ${String.format("%.2f", item.quotes[0].percentChange1h)} %"
         } else {
             holder.coinLivePrice.setTextColor(context.resources.getColor(R.color.red))
-            holder.coinLivePrice.text = " ${String.format("%.2f", item.quotes[0].percentChange1h)} %"
+            holder.coinLivePrice.text =
+                " ${String.format("%.2f", item.quotes[0].percentChange1h)} %"
+        }
+        if (holder.coinChangePrice != null) {
+            Glide.with(context)
+                .load("https://s3.coinmarketcap.com/generated/sparklines/web/7d/usd/${item.id}.png")
+                .into(holder.coinChangePrice)
+        }else{
+            Glide.with(context)
+                .load("https://s3.coinmarketcap.com/generated/sparklines/web/7d/usd/${1}.png")
+                .into(holder.coinChangePrice)
         }
     }
 
