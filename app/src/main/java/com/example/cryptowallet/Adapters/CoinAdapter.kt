@@ -6,17 +6,23 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.navigation.Navigation.findNavController
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cryptowallet.Activitys.DetailedActivity
 import com.example.cryptowallet.DataClasses.CryptoCurrency
-import com.example.cryptowallet.Fragments.HomeFragmentDirections
 import com.example.cryptowallet.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 
-class CoinAdapter(private val context: Context, private val coinList: List<CryptoCurrency>) :
+class CoinAdapter(
+    private val context: Context,
+    private val coinList: List<CryptoCurrency>,
+) :
     RecyclerView.Adapter<CoinAdapter.CoinViewHolder>() {
+    private lateinit var auth: FirebaseAuth
+    private lateinit var db: DatabaseReference
 
     inner class CoinViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val coinImg: ImageView = itemView.findViewById(R.id.idCoinImageLay)
@@ -24,12 +30,14 @@ class CoinAdapter(private val context: Context, private val coinList: List<Crypt
         val coinSortName: TextView = itemView.findViewById(R.id.idCoinSortNameLay)
         val coinLivePrice: TextView = itemView.findViewById(R.id.idCoinLivePriceLay)
         val coinFavCB: CheckBox = itemView.findViewById(R.id.idSaveCoinLay)
-        val coinChangePrice : ImageView = itemView.findViewById(R.id.idCoinPriceChangeLay)
+        val coinChangePrice: ImageView = itemView.findViewById(R.id.idCoinPriceChangeLay)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoinViewHolder {
-        val itemView = LayoutInflater.from(context).inflate(R.layout.home_recycler_layout, parent, false)
+        val itemView =
+            LayoutInflater.from(context).inflate(R.layout.home_recycler_layout, parent, false)
         return CoinViewHolder(itemView)
+
     }
 
     override fun onBindViewHolder(holder: CoinViewHolder, position: Int) {
@@ -38,41 +46,79 @@ class CoinAdapter(private val context: Context, private val coinList: List<Crypt
         holder.coinName.text = item.name
         holder.coinSortName.text = item.symbol
         holder.coinLivePrice.text = item.quotes[0].price.toString()
-        holder.coinFavCB.isChecked = item.isChecked
+        holder.coinFavCB.isChecked = true
         holder.coinFavCB.setOnCheckedChangeListener(null)
         holder.coinFavCB.setOnCheckedChangeListener { _, isChecked ->
-            item.isChecked = isChecked
-        }
 
-        holder.itemView.setOnClickListener {
-            val intent = Intent(context, DetailedActivity::class.java)
-            intent.putExtra("data", item.id)
-            context.startActivity(intent)
-        }
+            holder.coinFavCB.isChecked = true
+            holder.coinFavCB.setOnCheckedChangeListener(null)
+            holder.coinFavCB.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) {
+                    saveDataOnDB(item.name,item.id)
+                } else if (!isChecked) {
+                    removeDataFromDB(item.id)
+                }
+            }
 
-        Glide.with(context)
-            .load("https://s2.coinmarketcap.com/static/img/coins/64x64/${item.id}.png")
-            .thumbnail(Glide.with(context).load(R.drawable.loading1))
-            .into(holder.coinImg)
 
-        if (item.quotes[0].percentChange1h > 0) {
-            holder.coinLivePrice.setTextColor(context.resources.getColor(R.color.green))
-            holder.coinLivePrice.text =
-                "+ ${String.format("%.2f", item.quotes[0].percentChange1h)} %"
-        } else {
-            holder.coinLivePrice.setTextColor(context.resources.getColor(R.color.red))
-            holder.coinLivePrice.text =
-                " ${String.format("%.2f", item.quotes[0].percentChange1h)} %"
-        }
-        if (holder.coinChangePrice != null) {
+
+
+            holder.itemView.setOnClickListener {
+                val intent = Intent(context, DetailedActivity::class.java)
+                intent.putExtra("data", item.id)
+                context.startActivity(intent)
+            }
+
+            Glide.with(context)
+                .load("https://s2.coinmarketcap.com/static/img/coins/64x64/${item.id}.png")
+                .thumbnail(Glide.with(context).load(R.drawable.loading1))
+                .into(holder.coinImg)
+
+            val percentChange1h = item.quotes[0].percentChange1h
+            holder.coinLivePrice.setTextColor(
+                ContextCompat.getColor(
+                    context,
+                    if (percentChange1h > 0) R.color.green else R.color.red
+                )
+            )
+            holder.coinLivePrice.text = String.format("%.2f %%", percentChange1h)
+
             Glide.with(context)
                 .load("https://s3.coinmarketcap.com/generated/sparklines/web/7d/usd/${item.id}.png")
-                .into(holder.coinChangePrice)
-        }else{
-            Glide.with(context)
-                .load("https://s3.coinmarketcap.com/generated/sparklines/web/7d/usd/${1}.png")
+                .thumbnail(Glide.with(context).load(R.drawable.loading1))
                 .into(holder.coinChangePrice)
         }
+
+    }
+    private fun saveDataOnDB(name: String, id: Int) {
+        auth = FirebaseAuth.getInstance()
+        db = FirebaseDatabase.getInstance().getReference("FavCoin").child(auth.currentUser!!.uid)
+
+        db.child(name)
+            .setValue(id)
+            .addOnCompleteListener {
+                Toast.makeText(context, "$name Coin Saved", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun removeDataFromDB(id: Int) {
+        auth = FirebaseAuth.getInstance()
+        db = FirebaseDatabase.getInstance().getReference("FavCoin").child(auth.currentUser!!.uid)
+
+        db.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (id1 in snapshot.children) {
+                    val data = id1.getValue(Int::class.java)
+                    if (data == id) {
+                        id1.ref.removeValue()
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle onCancelled if needed
+            }
+        })
     }
 
     override fun getItemCount(): Int {

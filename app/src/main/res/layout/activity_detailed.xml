@@ -27,8 +27,8 @@
 
             <CheckBox
                 android:id="@+id/addWatchlistButton"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
+                android:layout_width="59dp"
+                android:layout_height="34dp"
                 android:button="@drawable/fav_coin__drawable"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -48,14 +48,31 @@
             <TextView
                 android:id="@+id/detailCoinShortName"
                 android:layout_width="wrap_content"
-                android:fontFamily="@font/amethysta"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/amethysta"
                 android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textSize="13sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/addWatchlistButton"
+                app:layout_constraintHorizontal_bias="0.513"
                 app:layout_constraintStart_toEndOf="@+id/backStackButton"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0"
+                tools:text="BTC" />
+
+            <TextView
+                android:id="@+id/detailCoinFullName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/amethysta"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toTopOf="@+id/detailCoinShortName"
+                app:layout_constraintEnd_toStartOf="@+id/addWatchlistButton"
+                app:layout_constraintHorizontal_bias="0.503"
+                app:layout_constraintStart_toEndOf="@+id/backStackButton"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
                 tools:text="BTC" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -230,7 +247,8 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_x="197dp"
-                android:layout_y="137dp"
+                android:progressTint="@color/purple_700"
+                android:layout_y="197dp"
                 android:foregroundGravity="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/detaillChartWebView"

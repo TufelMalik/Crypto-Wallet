@@ -14,7 +14,7 @@ class CoinViewModel(private val apiInterface: ApiInterface) : ViewModel() {
 
         viewModelScope.launch {
             try {
-                val response = apiInterface.getMarketData(Constants.LAST_URL_ID)
+                val response = apiInterface.getMarketData()
                 if (response.isSuccessful) {
                     val marketModel = response.body()
                     marketModel?.data?.cryptoCurrencyList?.let { coinList ->
