@@ -9,7 +9,7 @@ import retrofit2.http.Query
 
 interface ApiInterface {
     @GET(Constants.LAST_URL)
-    suspend fun getMarketData(@Query("lastUrl") lastUrl: String): Response<MarketModel>
+    suspend fun getMarketData(): Response<MarketModel>
 }
 
 
