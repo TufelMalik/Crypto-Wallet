@@ -4,6 +4,7 @@ import CoinAdapter
 import CoinViewModel
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
@@ -36,7 +37,7 @@ class DetailedActivity : AppCompatActivity() {
 
         val actionBar = supportActionBar
 
-        val data = intent.getStringExtra("data") as? CryptoCurrency
+        data = intent.getStringExtra("data") as? CryptoCurrency
         if (data != null) {
             setUpDetails(data)
         }
@@ -44,27 +45,9 @@ class DetailedActivity : AppCompatActivity() {
             onBackPressed()
         }
         actionBar!!.hide()
-        setRecyclerView()
         getCoinDataFromAPI()
 
 
-    }
-
-    private fun setRecyclerView() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            val result = ApiUtilities.getInstace().create(ApiInterface::class.java).getMarketData()
-            withContext(Dispatchers.Main) {
-                if (result != null) {
-                    binding.detailRecyclerView.adapter = CoinAdapter(
-                        this@DetailedActivity,
-                        result.body()!!.data.cryptoCurrencyList
-                    )
-                    // Log.d("Tufel", result.body()!!.data.cryptoCurrencyList.toString())
-                   binding.detailRecyclerView.layoutManager= GridLayoutManager(this@DetailedActivity,2)
-
-                }
-            }
-        }
     }
 
 
@@ -72,6 +55,10 @@ class DetailedActivity : AppCompatActivity() {
         binding.detailCoinShortName.text = data!!.name
         binding.circularProgressBar.visibility = View.VISIBLE
         binding.detailPriceTextView.text = data!!.id.toString()
+        binding.txt24DaysPrice.text = data!!.quotes[0].percentChange24h.toString()
+        binding.txt7DaysPrice.text = data!!.quotes[0].percentChange7d.toString()
+        binding.txt30DaysPrice.text = data!!.quotes[0].percentChange30d.toString()
+        binding.txt90DaysPrice.text = data!!.quotes[0].percentChange90d.toString()
     }
 
 

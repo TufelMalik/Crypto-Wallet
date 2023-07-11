@@ -246,15 +246,15 @@
                 android:id="@+id/circularProgressBar"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:layout_marginTop="80dp"
                 android:layout_x="197dp"
-                android:progressTint="@color/purple_700"
                 android:layout_y="197dp"
                 android:foregroundGravity="center"
+                android:progressTint="@color/purple_700"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/detaillChartWebView"
                 app:layout_constraintStart_toStartOf="@+id/detaillChartWebView"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.5" />
+                app:layout_constraintTop_toTopOf="parent" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -263,28 +263,191 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/AllDetail"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/multi_color2"
+            android:layout_height="match_parent"
             android:layout_marginLeft="4dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="4dp"
+            android:background="@drawable/multi_color2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/detailChart">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/detailRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
+            <CheckBox
+                android:id="@+id/cbWatchlistDet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/alike_angular"
+                android:layout_marginTop="194dp"
+                android:background="@drawable/border"
+                android:backgroundTint="@color/black"
+                android:button="@drawable/watchlist_dra"
+                android:padding="14dp"
+                android:paddingLeft="30dp"
+                android:text="Add Watchlist"
+                android:textColor="@color/white"
+                android:textSize="17dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.159"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <TextView
+                android:id="@+id/button7"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="209dp"
+                android:background="@drawable/border"
+                android:backgroundTint="@color/green"
+                android:padding="11dp"
+                android:fontFamily="@font/alike_angular"
+                android:paddingLeft="10dp"
+                android:text="Buy"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.465"
+                app:layout_constraintStart_toEndOf="@+id/cbWatchlistDet"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <TextView
+                android:id="@+id/textVfdiew12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="24 Hour : "
+                android:fontFamily="@font/alike_angular"
+                android:textColor="@color/white"
+                android:textSize="14dp"
+                app:layout_constraintBottom_toTopOf="@+id/cbWatchlistDet"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.107"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.308" />
+
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="7 Days :"
+                android:fontFamily="@font/alike_angular"
+                android:textColor="@color/white"
+                android:textSize="14dp"
+                app:layout_constraintBottom_toTopOf="@+id/cbWatchlistDet"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.114"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.486" />
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="30 Days :"
+                android:fontFamily="@font/alike_angular"
+                android:textColor="@color/white"
+                android:textSize="14dp"
+                app:layout_constraintBottom_toTopOf="@+id/cbWatchlistDet"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.112"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.643" />
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="90 Days :"
+                android:textColor="@color/white"
+                android:textSize="14dp"
+                android:fontFamily="@font/alike_angular"
+                app:layout_constraintBottom_toTopOf="@+id/cbWatchlistDet"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.112"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.816" />
+
+            <TextView
+                android:id="@+id/txt24DaysPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="loading..."
+                app:layout_constraintBottom_toTopOf="@+id/button7"
+                android:fontFamily="@font/alike_angular"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/textView12"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.347" />
+
+            <TextView
+                android:id="@+id/txt7DaysPrice"
+                android:layout_width="wrap_content"
+                android:fontFamily="@font/alike_angular"
+                android:layout_height="wrap_content"
+                android:text="loading..."
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.379" />
+
+            <TextView
+                android:id="@+id/txt90DaysPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/alike_angular"
+                android:text="loading..."
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.501"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.644" />
+
+            <TextView
+                android:id="@+id/txt30DaysPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="14dp"
+                android:text="loading..."
+                android:fontFamily="@font/alike_angular"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.512" />
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Volume"
+                android:textColor="@color/white"
+                android:textSize="23dp"
+                android:textStyle="bold"
+                android:fontFamily="@font/alike_angular"
+                app:layout_constraintBottom_toTopOf="@+id/textView12"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.083"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.153" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

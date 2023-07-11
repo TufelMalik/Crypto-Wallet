@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Configuration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.cryptowallet.DataClasses.CryptoCurrency
 
 object Tufel {
 

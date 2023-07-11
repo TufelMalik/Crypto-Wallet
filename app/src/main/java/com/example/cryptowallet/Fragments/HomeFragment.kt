@@ -13,12 +13,10 @@ import com.example.cryptowallet.Classes.HomeViewModel
 import com.example.cryptowallet.Classes.Tufel
 import com.example.cryptowallet.databinding.FragmentHomeBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
@@ -42,31 +40,31 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-
-    private fun getDataFromDB() {
-        database.getReference("FavCoin").child(userId).addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                for (snapshot1 in snapshot.children) {
-                    val coins = snapshot1.getValue(Int::class.java) // Retrieve coin ID as Int
-                    lifecycleScope.launch(Dispatchers.Main) {
-                        val data = ApiUtilities.getInstace().create(ApiInterface::class.java).getMarketData()
-                            binding.homeProgressBar.visibility = View.GONE
-                            val coinList = data.body()!!.data.cryptoCurrencyList
-                        Log.d("Tufe", coins.toString())
-                            homeViewModel.currencyList.observe(viewLifecycleOwner){
-                                binding.homeRecyclerView.adapter = CoinAdapter(requireContext(), coinList)
-
-                            Tufel.setRVLayoutOrientationManger(resources.configuration.orientation,requireContext(),binding.homeRecyclerView)
-                        }
-                    }
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // Handle onCancelled event
-            }
-        })
-    }
+//
+//    private fun getDataFromDB() {
+//        database.getReference("FavCoin").child(userId).addValueEventListener(object : ValueEventListener {
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                for (snapshot1 in snapshot.children) {
+//                    val coins = snapshot1.getValue(Int::class.java) // Retrieve coin ID as Int
+//                    lifecycleScope.launch(Dispatchers.Main) {
+//                        val data = ApiUtilities.getInstace().create(ApiInterface::class.java).getMarketData()
+//                            binding.homeProgressBar.visibility = View.GONE
+//                            val coinList = data.body()!!.data.cryptoCurrencyList
+//                             Log.d("Tufe", coins.toString())
+//                            homeViewModel.currencyList.observe(viewLifecycleOwner){
+//                                binding.homeRecyclerView.adapter = CoinAdapter(requireContext(), coinList)
+//
+//                            Tufel.setRVLayoutOrientationManger(resources.configuration.orientation,requireContext(),binding.homeRecyclerView)
+//                        }
+//                    }
+//                }
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//                // Handle onCancelled event
+//            }
+//        })
+//    }
 
 
 
@@ -74,7 +72,25 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getDataFromDB()
+//        getDataFromDB()
+        callApiGetData()
+    }
+
+    private fun callApiGetData() {
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            val result = ApiUtilities.getInstace().create(ApiInterface::class.java)
+            withContext(Dispatchers.Main) {
+                val coinData = result.getMarketData().body()!!.data.cryptoCurrencyList
+                if(coinData != null){
+                    binding.homeRecyclerView.adapter = CoinAdapter(requireContext(),coinData)
+                    Log.d("Tufel",coinData.toString())
+                    Tufel.setRVLayoutOrientationManger(resources.configuration.orientation,requireContext(),binding.homeRecyclerView)
+                }
+            }
+
+        }
+
     }
 
     override fun onResume() {
