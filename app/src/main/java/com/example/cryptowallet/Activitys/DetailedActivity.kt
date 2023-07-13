@@ -1,27 +1,16 @@
 package com.example.cryptowallet.Activitys
 
-import CoinAdapter
+
 import CoinViewModel
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.GridLayoutManager
-import com.bumptech.glide.Glide
-import com.example.cryptowallet.API.ApiInterface
-import com.example.cryptowallet.API.ApiUtilities
-import com.example.cryptowallet.Classes.CoinViewModelFactory
 import com.example.cryptowallet.Classes.Constants
 import com.example.cryptowallet.DataClasses.CryptoCurrency
 import com.example.cryptowallet.R
 import com.example.cryptowallet.databinding.ActivityDetailedBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class DetailedActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailedBinding
@@ -47,7 +36,19 @@ class DetailedActivity : AppCompatActivity() {
         actionBar!!.hide()
         getCoinDataFromAPI()
 
+        saveCoinOnWatchList()
 
+    }
+
+    private fun saveCoinOnWatchList() {
+        val cb = binding.cbWatchlistDet
+//        cb.setOnCheckedChangeListener { compoundButton, b ->
+//            if(cb.isChecked){
+//                binding.cbWatchlistDet.setBackgroundColor(resources.getColor(R.color.black))
+//            }else{
+//                binding.cbWatchlistDet.setBackgroundColor(resources.getColor(R.color.gray))
+//            }
+//        }
     }
 
 
@@ -64,55 +65,10 @@ class DetailedActivity : AppCompatActivity() {
 
     private fun getCoinDataFromAPI() {
 
-        val apiInterface = ApiUtilities.getInstace().create(ApiInterface::class.java)
         val intent = intent
         val coinId = intent.getIntExtra("data", 1027)
         Constants.coinID = coinId
-        val factory = CoinViewModelFactory(apiInterface)
-        viewModel = ViewModelProvider(this, factory).get(CoinViewModel::class.java)
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                val result = apiInterface.getMarketData()
-                withContext(Dispatchers.Main) {
-                    if (result.isSuccessful) {
-                        val cryptoCurrencyList = result.body()?.data?.cryptoCurrencyList
-                        if (!cryptoCurrencyList.isNullOrEmpty()) {
-                            val coinData = cryptoCurrencyList.find { it.id == coinId }
-                            coinData?.let { coin ->
-                                binding.circularProgressBar.visibility = View.GONE
-                                setButtonsOnClick(coin)
-                                binding.detailCoinShortName.text = coin.symbol
-                                binding.detailPriceTextView.text = coin.quotes[0].price.toString()
-                                loadChart(coin)
-                                binding.detailCoinFullName.text = coin.name
-                                Glide.with(this@DetailedActivity)
-                                    .load("https://s2.coinmarketcap.com/static/img/coins/64x64/${coin.id}.png")
-                                    .thumbnail(Glide.with(this@DetailedActivity).load(R.drawable.loading13))
-                                    .into(binding.detailImageView)
-                                binding.detailPriceTextView.text =coin.name
-                                if (coin.quotes[0].percentChange1h > 0) {
-                                    binding.detailChangeTextView.setTextColor(this@DetailedActivity.resources.getColor(R.color.green))
-                                    binding.detailChangeTextView.text = " ${String.format("%.4f", coin.quotes[0].percentChange1h)} %"
-                                    binding.detailChangeImageView.setImageResource(R.drawable.ic_caret_up)
-                                } else {
-                                    binding.detailChangeTextView.setTextColor(this@DetailedActivity.resources.getColor(R.color.red))
-                                    binding.detailChangeTextView.text = " ${String.format("%.4f", coin.quotes[0].percentChange1h)} %"
-                                    binding.detailChangeImageView.setImageResource(R.drawable.ic_caret_down)
-                                }
-                                binding.detailPriceTextView.text =   "$ ${String.format("%.2f", coin.quotes[0].price)} %"
-
-
-                            }
-                        }
-                    } else {
-                        Toast.makeText(this@DetailedActivity, "Something went wrong !!!", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            } catch (e: Exception) {
-                Toast.makeText(this@DetailedActivity, "Something went wrong.\n${e.message}", Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 
     private fun setButtonsOnClick(coin: CryptoCurrency) {

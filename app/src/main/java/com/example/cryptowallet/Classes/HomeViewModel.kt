@@ -12,17 +12,17 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class HomeViewModel : ViewModel() {
-    private val _currencyList = MutableLiveData<List<CryptoCurrency>>()
-    val currencyList: LiveData<List<CryptoCurrency>> get() = _currencyList
-
-    fun fetchCurrencyList() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = ApiUtilities.getInstace().create(ApiInterface::class.java).getMarketData()
-            withContext(Dispatchers.Main) {
-                if (result != null && result.isSuccessful) {
-                    _currencyList.value = result.body()?.data?.cryptoCurrencyList
-                }
-            }
-        }
-    }
+//    private val _currencyList = MutableLiveData<List<CryptoCurrency>>()
+//    val currencyList: LiveData<List<CryptoCurrency>> get() = _currencyList
+//
+//    fun fetchCurrencyList() {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            val result = ApiUtilities.getInstace().create(ApiInterface::class.java).getMarketData()
+//            withContext(Dispatchers.Main) {
+//                if (result != null && result.isSuccessful) {
+//                    _currencyList.value = result.body()?.data?.cryptoCurrencyList
+//                }
+//            }
+//        }
+//    }
 }

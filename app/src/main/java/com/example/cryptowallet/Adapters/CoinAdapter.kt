@@ -75,7 +75,7 @@ class CoinAdapter(
                 if (percentChange1h > 0) R.color.green else R.color.red
             )
         )
-        holder.coinLivePrice.text = String.format("%.2f %%", percentChange1h)
+        holder.coinLivePrice.text = if (percentChange1h > 0) "+ "+ String.format("%.2f %%", percentChange1h) else  String.format("%.2f %%", percentChange1h)
 
         Glide.with(context)
             .load("https://s3.coinmarketcap.com/generated/sparklines/web/7d/usd/${item.id}.png")
@@ -83,18 +83,18 @@ class CoinAdapter(
             .into(holder.coinChangePrice)
     }
 
-    private fun saveDataOnDB(name: String, id: Int) {
+    private fun saveDataOnDB(name: String?, id: Long) {
         auth = FirebaseAuth.getInstance()
         db = FirebaseDatabase.getInstance().getReference("FavCoin").child(auth.currentUser!!.uid)
 
-        db.child(name)
+        db.child(name!!)
             .setValue(id)
             .addOnCompleteListener {
                 Toast.makeText(context, "$name Coin Saved", Toast.LENGTH_SHORT).show()
             }
     }
 
-    private fun removeDataFromDB(id: Int) {
+    private fun removeDataFromDB(id: Long) {
         auth = FirebaseAuth.getInstance()
         db = FirebaseDatabase.getInstance().getReference("FavCoin").child(auth.currentUser!!.uid)
 
@@ -102,7 +102,7 @@ class CoinAdapter(
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (id1 in snapshot.children) {
                     val data = id1.getValue(Int::class.java)
-                    if (data == id) {
+                    if (data!!.toLong() == id) {
                         id1.ref.removeValue()
                     }
                 }

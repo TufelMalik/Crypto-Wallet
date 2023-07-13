@@ -1,7 +1,6 @@
 package com.example.cryptowallet.Fragments
 
 import android.app.Activity
-import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -12,12 +11,15 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.example.cryptowallet.Activitys.Settings.AccountSettings
+import com.example.cryptowallet.Activitys.Settings.CurrencySettings
+import com.example.cryptowallet.Activitys.Settings.NotificationSettings
+import com.example.cryptowallet.Activitys.Settings.OtherSettings
+import com.example.cryptowallet.Activitys.Settings.SecuritySettings
 import com.example.cryptowallet.DataClasses.Users
 import com.example.cryptowallet.R
 import com.example.cryptowallet.databinding.FragmentProfileBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 
@@ -50,6 +52,23 @@ class ProfileFragment : Fragment() {
 
 
         setData()
+        binding.idAccSetting.setOnClickListener {
+            openSettingsActivity(AccountSettings::class.java)
+        }
+        binding.idCurrecncySetting.setOnClickListener {
+            openSettingsActivity(CurrencySettings::class.java)
+        }
+        binding.idNotificationSetting.setOnClickListener {
+            openSettingsActivity(NotificationSettings::class.java)
+        }
+        binding.idSecuritySetting.setOnClickListener {
+            openSettingsActivity(SecuritySettings::class.java)
+        }
+        binding.txtVerison.setOnClickListener {
+            openSettingsActivity(OtherSettings::class.java)
+        }
+
+
 
         val function: (View) -> Unit = {
             openGallery()
@@ -60,6 +79,11 @@ class ProfileFragment : Fragment() {
         binding.userImgProfile.setOnClickListener(function)
 
         return binding.root
+    }
+
+    private fun openSettingsActivity(activityClass: Class<*>) {
+        val intent = Intent(context, activityClass)
+        startActivity(intent)
     }
 
     private fun uplodeImageOnDatabase() {
