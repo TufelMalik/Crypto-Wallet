@@ -1,7 +1,7 @@
 package com.example.cryptowallet.DataClasses
 
 data class Platform(
-    val id: Int,
+    val id: String?,
     val name: String,
     val slug: String,
     val symbol: String,

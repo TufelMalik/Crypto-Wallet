@@ -17,8 +17,33 @@
         android:theme="@style/Theme.CryptoWallet"
         tools:targetApi="31">
         <activity
-            android:name=".Activitys.DetailedActivity"
+            android:name=".Activitys.Settings.OtherSettings"
+            android:exported="false" />
+        <activity
+            android:name=".Activitys.Settings.CurrencySettings"
+            android:exported="false" />
+        <activity
+            android:name=".Activitys.Settings.SecuritySettings"
+            android:exported="false" />
+        <activity
+            android:name=".Activitys.Settings.NotificationSettings"
+            android:exported="false" />
+        <activity
+            android:name=".Activitys.Settings.AccountSettings"
+            android:exported="false"
+            android:label="@string/title_activity_account_settings"
+            android:theme="@style/Theme.CryptoWallet" />
+        <activity
+            android:name=".Activitys.SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Activitys.DetailedActivity"
             android:exported="false" />
         <activity
             android:name=".Activitys.FavCoinActivity"
@@ -38,12 +63,6 @@
         <activity
             android:name=".Activitys.LoginActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

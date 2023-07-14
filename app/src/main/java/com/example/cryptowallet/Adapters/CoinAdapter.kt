@@ -37,7 +37,6 @@ class CoinAdapter(
         val itemView =
             LayoutInflater.from(context).inflate(R.layout.home_recycler_layout, parent, false)
         return CoinViewHolder(itemView)
-
     }
 
     override fun onBindViewHolder(holder: CoinViewHolder, position: Int) {
@@ -46,62 +45,56 @@ class CoinAdapter(
         holder.coinName.text = item.name
         holder.coinSortName.text = item.symbol
         holder.coinLivePrice.text = item.quotes[0].price.toString()
-        holder.coinFavCB.isChecked = true
+        holder.coinFavCB.isChecked = false
         holder.coinFavCB.setOnCheckedChangeListener(null)
         holder.coinFavCB.setOnCheckedChangeListener { _, isChecked ->
-
-            holder.coinFavCB.isChecked = true
-            holder.coinFavCB.setOnCheckedChangeListener(null)
-            holder.coinFavCB.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked) {
-                    saveDataOnDB(item.name,item.id)
-                } else if (!isChecked) {
-                    removeDataFromDB(item.id)
-                }
+            if (isChecked) {
+                holder.coinFavCB.isChecked = true
+                saveDataOnDB(item.name, item.id)
+            } else {
+                holder.coinFavCB.isChecked  = false
+                removeDataFromDB(item.id)
             }
-
-
-
-
-            holder.itemView.setOnClickListener {
-                val intent = Intent(context, DetailedActivity::class.java)
-                intent.putExtra("data", item.id)
-                context.startActivity(intent)
-            }
-
-            Glide.with(context)
-                .load("https://s2.coinmarketcap.com/static/img/coins/64x64/${item.id}.png")
-                .thumbnail(Glide.with(context).load(R.drawable.loading1))
-                .into(holder.coinImg)
-
-            val percentChange1h = item.quotes[0].percentChange1h
-            holder.coinLivePrice.setTextColor(
-                ContextCompat.getColor(
-                    context,
-                    if (percentChange1h > 0) R.color.green else R.color.red
-                )
-            )
-            holder.coinLivePrice.text = String.format("%.2f %%", percentChange1h)
-
-            Glide.with(context)
-                .load("https://s3.coinmarketcap.com/generated/sparklines/web/7d/usd/${item.id}.png")
-                .thumbnail(Glide.with(context).load(R.drawable.loading1))
-                .into(holder.coinChangePrice)
         }
 
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, DetailedActivity::class.java)
+            intent.putExtra("data", item.id)
+            context.startActivity(intent)
+        }
+
+        Glide.with(context)
+            .load("https://s2.coinmarketcap.com/static/img/coins/64x64/${item.id}.png")
+            .thumbnail(Glide.with(context).load(R.drawable.loading1))
+            .into(holder.coinImg)
+
+        val percentChange1h = item.quotes[0].percentChange1h
+        holder.coinLivePrice.setTextColor(
+            ContextCompat.getColor(
+                context,
+                if (percentChange1h > 0) R.color.green else R.color.red
+            )
+        )
+        holder.coinLivePrice.text = if (percentChange1h > 0) "+ "+ String.format("%.2f %%", percentChange1h) else  String.format("%.2f %%", percentChange1h)
+
+        Glide.with(context)
+            .load("https://s3.coinmarketcap.com/generated/sparklines/web/7d/usd/${item.id}.png")
+            .thumbnail(Glide.with(context).load(R.drawable.loading1))
+            .into(holder.coinChangePrice)
     }
-    private fun saveDataOnDB(name: String, id: Int) {
+
+    private fun saveDataOnDB(name: String?, id: Long) {
         auth = FirebaseAuth.getInstance()
         db = FirebaseDatabase.getInstance().getReference("FavCoin").child(auth.currentUser!!.uid)
 
-        db.child(name)
+        db.child(name!!)
             .setValue(id)
             .addOnCompleteListener {
                 Toast.makeText(context, "$name Coin Saved", Toast.LENGTH_SHORT).show()
             }
     }
 
-    private fun removeDataFromDB(id: Int) {
+    private fun removeDataFromDB(id: Long) {
         auth = FirebaseAuth.getInstance()
         db = FirebaseDatabase.getInstance().getReference("FavCoin").child(auth.currentUser!!.uid)
 
@@ -109,7 +102,7 @@ class CoinAdapter(
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (id1 in snapshot.children) {
                     val data = id1.getValue(Int::class.java)
-                    if (data == id) {
+                    if (data!!.toLong() == id) {
                         id1.ref.removeValue()
                     }
                 }

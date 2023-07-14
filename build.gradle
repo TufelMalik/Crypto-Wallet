@@ -1,10 +1,19 @@
 buildscript {
+
+    repositories {
+        jcenter()
+        google()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.0.2'
+    }
     ext {
         kotlin_version = '1.9.0-RC'
     }
     dependencies {
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.7.0-beta02"
         classpath 'com.google.gms:google-services:4.3.15'
+        classpath 'com.android.tools.build:gradle:8.0.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.0"
     }
     repositories {
