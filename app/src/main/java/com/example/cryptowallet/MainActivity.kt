@@ -20,6 +20,9 @@ import com.example.cryptowallet.Fragments.HomeFragment
 import com.example.cryptowallet.Fragments.ProfileFragment
 import com.example.cryptowallet.Fragments.WalletFragment
 import com.example.cryptowallet.databinding.ActivityMainBinding
+import com.google.android.material.navigation.NavigationBarView
+import me.ibrahimsn.lib.OnItemReselectedListener
+import me.ibrahimsn.lib.OnItemSelectedListener
 
 class MainActivity : AppCompatActivity() {
     val binding by lazy{
@@ -44,28 +47,37 @@ class MainActivity : AppCompatActivity() {
             .commit()
 
 
+        changeFragments(HomeFragment())
 
-
-        binding.bottomBar.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.tab_home -> {
-                    changeFragments(HomeFragment())
-                    true
-                }
-
-                R.id.tab_wallet -> {
-                    changeFragments(WalletFragment())
-                    true
-                }
-
-                R.id.tab_profile -> {
-                    changeFragments(ProfileFragment())
-                    true
-                }
-
-                else -> false
+        binding.bottomBar.setOnItemSelectedListener {pos ->
+            when (pos) {
+                0 -> changeFragments(HomeFragment())
+                1 -> changeFragments(WalletFragment())
+                else -> changeFragments(ProfileFragment())
             }
         }
+
+
+//        binding.bottomBar.setOnItemSelectedListener { item ->
+//            when (item.itemId) {
+//                R.id.tab_home -> {
+//                    changeFragments(HomeFragment())
+//                    true
+//                }
+//
+//                R.id.tab_wallet -> {
+//                    changeFragments(WalletFragment())
+//                    true
+//                }
+//
+//                R.id.tab_profile -> {
+//                    changeFragments(ProfileFragment())
+//                    true
+//                }
+//
+//                else -> false
+//            }
+//        }
 
     }
 

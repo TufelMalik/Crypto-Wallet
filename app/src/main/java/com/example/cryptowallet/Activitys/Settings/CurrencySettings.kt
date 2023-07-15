@@ -11,6 +11,7 @@ class CurrencySettings : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCurrencySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        supportActionBar!!.hide()
 
         binding.currencyBackButton.setOnClickListener {
             onBackPressed()

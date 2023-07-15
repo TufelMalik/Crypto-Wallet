@@ -28,11 +28,9 @@
     <activity
         android:id="@+id/detailedActivity2"
         android:name="com.example.cryptowallet.Activitys.DetailedActivity"
-        android:label="DetailedActivity" >
-        <argument
-            android:name="data"
-            app:argType="com.example.cryptowallet.DataClasses.CryptoCurrency"
-            app:nullable="true"
-            android:defaultValue="@null" />
-    </activity>
-</navigation>
+        android:label="DetailedActivity"
+        tools:layout="@layout/activity_detailed">
+
+</activity>
+
+    </navigation>

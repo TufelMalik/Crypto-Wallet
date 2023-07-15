@@ -8,30 +8,35 @@
     tools:menu="@menu/fav_coins_menu">
 
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_bar"
+    <me.ibrahimsn.lib.SmoothBottomBar
+        android:id="@+id/bottomBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/multi_color"
-        app:menu="@menu/bottomnav"
-        app:itemIconTint="@color/green"
-        app:itemTextColor="@color/red"
-        app:labelVisibilityMode="labeled"
+        android:layout_height="60dp"
+        android:contentDescription="@string/app_name"
+        app:backgroundColor="@color/purple_700"
+        app:cornerRadius="3dp"
+        app:corners="all"
+        app:iconSize="23dp"
+        app:iconTint="@color/white"
+        app:itemFontFamily="@font/alike_angular"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottomnav"
+        app:textSize="12sp" />
 
     <FrameLayout
         android:id="@+id/mainContainer"
-        android:layout_marginBottom="65dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_bar"
+        android:layout_height="673dp"
+        android:background="#494646"
+        app:layout_constraintBottom_toBottomOf="@+id/bottomBar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
     </FrameLayout>
 

@@ -76,8 +76,7 @@ dependencies {
 //    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     // BottomBar
-//    implementation 'nl.joery.animatedbottombar:library:1.2.0'
-    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'com.github.ibrahimsn98:SmoothBottomBar:1.7.9'
 
 
     // Image Slider
@@ -95,4 +94,8 @@ dependencies {
     // Navigation Components
     implementation 'androidx.navigation:navigation-fragment-ktx:2.6.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.6.0'
+
+    def nav_version = "2.3.5" // Use the latest version available
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 }
