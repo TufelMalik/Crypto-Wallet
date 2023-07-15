@@ -20,8 +20,6 @@ import com.example.cryptowallet.Fragments.HomeFragment
 import com.example.cryptowallet.Fragments.ProfileFragment
 import com.example.cryptowallet.Fragments.WalletFragment
 import com.example.cryptowallet.databinding.ActivityMainBinding
-import com.google.firebase.database.FirebaseDatabase
-import nl.joery.animatedbottombar.AnimatedBottomBar
 
 class MainActivity : AppCompatActivity() {
     val binding by lazy{
@@ -40,58 +38,53 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-
         // By Default Home Fragement
         supportFragmentManager.beginTransaction()
-            .replace(R.id.mainContainer,HomeFragment())
+            .replace(R.id.mainContainer, HomeFragment())
             .commit()
 
 
 
 
-
-
-        binding.bottomBar.setOnTabSelectListener(object : AnimatedBottomBar.OnTabSelectListener {
-            override fun onTabSelected(
-                lastIndex: Int,
-                lastTab: AnimatedBottomBar.Tab?,
-                newIndex: Int,
-                newTab: AnimatedBottomBar.Tab
-            ) {
-                when(newIndex){
-                    0->
-                        changeFragments(HomeFragment())
-                    1->
-                        changeFragments(WalletFragment())
-                    2->
-                        changeFragments(ProfileFragment())
+        binding.bottomBar.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.tab_home -> {
+                    changeFragments(HomeFragment())
+                    true
                 }
+
+                R.id.tab_wallet -> {
+                    changeFragments(WalletFragment())
+                    true
+                }
+
+                R.id.tab_profile -> {
+                    changeFragments(ProfileFragment())
+                    true
+                }
+
+                else -> false
             }
-
-            // An optional method that will be fired whenever an already selected tab has been selected again.
-            override fun onTabReselected(index: Int, tab: AnimatedBottomBar.Tab) {
-               // Log.d("bottom_bar", "Reselected index: $index, title: ${tab.title}")
-            }
-        })
-    }
-
-
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.fav_coins_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.idFav_coin_menu -> {
-                val intent = Intent(this, FavCoinActivity::class.java)
-                startActivity(intent)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
         }
+
     }
+
+        override fun onCreateOptionsMenu(menu: Menu): Boolean {
+            menuInflater.inflate(R.menu.fav_coins_menu, menu)
+            return true
+        }
+
+        override fun onOptionsItemSelected(item: MenuItem): Boolean {
+            return when (item.itemId) {
+                R.id.idFav_coin_menu -> {
+                    val intent = Intent(this, FavCoinActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+
+                else -> super.onOptionsItemSelected(item)
+            }
+        }
 
 
 
