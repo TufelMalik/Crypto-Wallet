@@ -31,6 +31,22 @@ class CoinAdapter(
         val coinLivePrice: TextView = itemView.findViewById(R.id.idCoinLivePriceLay)
         val coinFavCB: CheckBox = itemView.findViewById(R.id.idSaveCoinLay)
         val coinChangePrice: ImageView = itemView.findViewById(R.id.idCoinPriceChangeLay)
+
+        init {
+            coinFavCB.setOnCheckedChangeListener { _, isChecked ->
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val item = coinList[position]
+                    item.isChecked = isChecked
+
+                    if (isChecked) {
+                        saveDataOnDB(item.name, item.id)
+                    } else {
+                        removeDataFromDB(item.id)
+                    }
+                }
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoinViewHolder {
@@ -45,27 +61,20 @@ class CoinAdapter(
         holder.coinName.text = item.name
         holder.coinSortName.text = item.symbol
         holder.coinLivePrice.text = item.quotes[0].price.toString()
-        holder.coinFavCB.isChecked = false
-        holder.coinFavCB.setOnCheckedChangeListener(null)
-        holder.coinFavCB.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                holder.coinFavCB.isChecked = true
-                saveDataOnDB(item.name, item.id)
-            } else {
-                holder.coinFavCB.isChecked  = false
-                removeDataFromDB(item.id)
-            }
-        }
+        holder.coinFavCB.isChecked = item.isChecked
+
+        // ... Rest of your onBindViewHolder code ...
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, DetailedActivity::class.java)
+            Toast.makeText(context, item.id.toString(), Toast.LENGTH_SHORT).show()
             intent.putExtra("data", item.id)
             context.startActivity(intent)
         }
 
         Glide.with(context)
             .load("https://s2.coinmarketcap.com/static/img/coins/64x64/${item.id}.png")
-            .thumbnail(Glide.with(context).load(R.drawable.loading1))
+            .thumbnail(Glide.with(context).load(R.drawable.loading13))
             .into(holder.coinImg)
 
         val percentChange1h = item.quotes[0].percentChange1h
@@ -75,12 +84,23 @@ class CoinAdapter(
                 if (percentChange1h > 0) R.color.green else R.color.red
             )
         )
-        holder.coinLivePrice.text = if (percentChange1h > 0) "+ "+ String.format("%.2f %%", percentChange1h) else  String.format("%.2f %%", percentChange1h)
+        holder.coinLivePrice.text =
+            if (percentChange1h > 0) "+ " + String.format("%.2f %%", percentChange1h) else String.format(
+                "%.2f %%",
+                percentChange1h
+            )
 
         Glide.with(context)
             .load("https://s3.coinmarketcap.com/generated/sparklines/web/7d/usd/${item.id}.png")
-            .thumbnail(Glide.with(context).load(R.drawable.loading1))
+            .thumbnail(Glide.with(context).load(R.drawable.loading13))
             .into(holder.coinChangePrice)
+    }
+
+    override fun getItemCount() = coinList.size
+
+    fun updateData(data: List<CryptoCurrency>) {
+        coinList = data
+        notifyDataSetChanged()
     }
 
     private fun saveDataOnDB(name: String?, id: Long) {
@@ -112,14 +132,5 @@ class CoinAdapter(
                 // Handle onCancelled if needed
             }
         })
-    }
-
-    override fun getItemCount(): Int {
-        return coinList.size
-    }
-
-    fun updateData(data: List<CryptoCurrency>) {
-        coinList = data
-        notifyDataSetChanged()
     }
 }

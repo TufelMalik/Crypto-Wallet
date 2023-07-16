@@ -7,9 +7,11 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.*
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.airbnb.lottie.LottieAnimationView
 import com.example.cryptowallet.API.ApiInterface
 import com.example.cryptowallet.API.ApiUtilities
 import com.example.cryptowallet.Classes.Tufel
@@ -43,16 +45,14 @@ class HomeFragment : Fragment() {
         database = FirebaseDatabase.getInstance()
         userId= auth.currentUser!!.uid
         dataList = listOf()
+        binding.homeRecyclerView.setBackgroundColor(resources.getColor(R.color.black))
+        binding.backHomeFragment.setBackgroundColor(resources.getColor(R.color.black))
         binding.homeProgressBar.visibility = View.GONE
-        callApiGetData()
-        searchCoinFromList()
-//        val coinDao = CoinsDatabase.getInstance(requireContext()).coinsDao()
-//        val repository = CoinRepository(coinDao)
-//        coinViewModel = ViewModelProvider(this, CoinViewModelFactory(repository)).get(CoinViewModel::class.java)
-
 
         return binding.root
     }
+
+
 
 
     lateinit var searchText : String
@@ -84,12 +84,12 @@ class HomeFragment : Fragment() {
                 data.add(item)
             }
         }
-
-        // Check if the data list is empty
         if (data.isEmpty()) {
             binding.backHomeFragment.setBackgroundColor(resources.getColor(R.color.black))
             binding.homeRecyclerView.visibility = View.GONE
-            binding.notFoundAnimationHome.visibility = View.VISIBLE // Assuming you have a TextView with "No data found" message
+            binding.txtResult.visibility = View.VISIBLE
+            binding.txtResult.text= "Coin Not Found !"
+            binding.notFoundAnimationHome.visibility = View.VISIBLE
         } else {
             binding.homeRecyclerView.visibility = View.VISIBLE
             binding.notFoundAnimationHome.visibility = View.GONE
@@ -97,7 +97,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-//
+
 //    private fun getDataFromDB() {
 //        database.getReference("FavCoin").child(userId).addValueEventListener(object : ValueEventListener {
 //            override fun onDataChange(snapshot: DataSnapshot) {
@@ -129,21 +129,18 @@ class HomeFragment : Fragment() {
 
 
     private fun callApiGetData() {
-
+        binding.homeProgressBar.visibility = View.VISIBLE
         lifecycleScope.launch(Dispatchers.IO) {
             val result = ApiUtilities.getInstace().create(ApiInterface::class.java)
             withContext(Dispatchers.Main) {
                 dataList = result.getMarketData().body()!!.data.cryptoCurrencyList
                 if (dataList != null) {
+                    binding.homeRecyclerView.setBackgroundColor(resources.getColor(R.color.black))
+                    binding.homeProgressBar.visibility = View.GONE
                     adapter = CoinAdapter(requireContext(), dataList)
                     binding.homeRecyclerView.adapter = adapter
                     Log.d("Tufel", dataList.toString())
-//                    coinData?.let {
-//                        // Save data in Room
-//                        for (coin in coinData) {
-//                            coinViewModel.insertCoins(coin)
-//                        }
-                        Tufel.setRVLayoutOrientationManger(
+                    Tufel.setRVLayoutOrientationManger(
                             resources.configuration.orientation,
                             requireContext(),
                             binding.homeRecyclerView
@@ -153,10 +150,30 @@ class HomeFragment : Fragment() {
 
             }
     }
+    private fun checkInternet() {
+        if(Tufel.isOnline(requireContext())){
+            binding.notFoundAnimationHome.visibility = View.GONE
+            callApiGetData()
+            searchCoinFromList()
+        }else{
+            val animationView = binding.notFoundAnimationHome
+            binding.homeBanner.visibility = View.GONE
+            val offlineAnimationResId = R.raw.no_internet
+            updateLottieAnimation(animationView, offlineAnimationResId)
+        }
+    }
 
+
+    private fun updateLottieAnimation(animationView: LottieAnimationView, rawResId: Int) {
+        animationView.setAnimation(rawResId)
+        animationView.playAnimation()
+        binding.txtResult.visibility = View.VISIBLE
+        binding.txtResult.text= "No Internet"
+        binding.notFoundAnimationHome.visibility = View.VISIBLE
+    }
     override fun onResume() {
         super.onResume()
-        binding.notFoundAnimationHome.visibility = View.GONE
+        checkInternet()
     }
 
 }

@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.example.cryptowallet.Activitys.FavCoinActivity
+import com.example.cryptowallet.Classes.Tufel
 import com.example.cryptowallet.Fragments.HomeFragment
 import com.example.cryptowallet.Fragments.ProfileFragment
 import com.example.cryptowallet.Fragments.WalletFragment
@@ -30,7 +31,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private lateinit var searchView: SearchView
+    override fun onResume() {
+        super.onResume()
 
+    }
 
     override fun onBackPressed() {
         finishAffinity()
@@ -40,6 +44,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+
+        if(Tufel.isOnline(this@MainActivity)){
+            binding.noInternetAnimationHome.visibility = View.VISIBLE
+        }else{
+            binding.noInternetAnimationHome.visibility = View.GONE
+        }
 
         // By Default Home Fragement
         supportFragmentManager.beginTransaction()
@@ -56,28 +66,6 @@ class MainActivity : AppCompatActivity() {
                 else -> changeFragments(ProfileFragment())
             }
         }
-
-
-//        binding.bottomBar.setOnItemSelectedListener { item ->
-//            when (item.itemId) {
-//                R.id.tab_home -> {
-//                    changeFragments(HomeFragment())
-//                    true
-//                }
-//
-//                R.id.tab_wallet -> {
-//                    changeFragments(WalletFragment())
-//                    true
-//                }
-//
-//                R.id.tab_profile -> {
-//                    changeFragments(ProfileFragment())
-//                    true
-//                }
-//
-//                else -> false
-//            }
-//        }
 
     }
 

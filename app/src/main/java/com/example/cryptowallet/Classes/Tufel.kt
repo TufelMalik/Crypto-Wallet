@@ -2,11 +2,21 @@ package com.example.cryptowallet.Classes
 
 import android.content.Context
 import android.content.res.Configuration
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.cryptowallet.DataClasses.CryptoCurrency
 
 object Tufel {
+
+    fun isOnline(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkCapabilities = connectivityManager.activeNetwork ?: return false
+        val activeNetwork = connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
+
+        return activeNetwork.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+    }
 
     fun setRVLayoutOrientationManger(orientation: Int, context: Context, rv: RecyclerView) {
         if(orientation == Configuration.ORIENTATION_LANDSCAPE){

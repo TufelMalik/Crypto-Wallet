@@ -1,5 +1,7 @@
 package com.example.cryptowallet.DataClasses
 
+import java.io.Serializable
+
 data class Quote(
     val dominance: Double,
     val fullyDilluttedMarketCap: Double,
@@ -18,4 +20,4 @@ data class Quote(
     val tvl: Double,
     val volume24h: Double,
     val ytdPriceChangePercentage: Double
-)
+) : Serializable
