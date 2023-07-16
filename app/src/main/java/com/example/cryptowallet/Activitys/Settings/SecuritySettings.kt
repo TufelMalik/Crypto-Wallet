@@ -12,6 +12,7 @@ class SecuritySettings : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySecuritySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        supportActionBar!!.hide()
 
         binding.securityBackButton.setOnClickListener {
             onBackPressed()

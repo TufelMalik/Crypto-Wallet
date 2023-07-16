@@ -1,80 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/backHomeFragment"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="#494646"
     tools:context=".Fragments.HomeFragment">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/notFound_animation_home"
+        android:layout_width="305dp"
+        android:layout_height="409dp"
+        android:layout_margin="38dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/not_found_animation" />
+
 
     <ProgressBar
         android:id="@+id/homeProgressBar"
-        style="?android:attr/subtitleTextStyle"
         android:layout_width="50dp"
-        android:layout_marginTop="80dp"
         android:layout_height="50dp"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:layout_marginTop="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5" />
+
+
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="wrap_content"
-        android:background="@android:color/black">
-
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/searchViewHome"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="7dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="4dp"
-            android:background="@drawable/corner"
-            android:backgroundTint="@color/purple_700"
-            android:clickable="true"
-            android:outlineAmbientShadowColor="@color/white"
-            android:paddingLeft="10dp"
-            android:text="Crypto Wallet"
-            android:textAlignment="viewStart"
-            app:queryHint="Search Coins..." >
-
-        </androidx.appcompat.widget.SearchView>
-
-
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="20dp"
-            android:layout_margin="14dp"
-            >
-            <ImageView
+            android:background="@android:color/black"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/searchViewHome"
                 android:layout_width="match_parent"
-                android:layout_height="162dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/banner5" />
-        </androidx.cardview.widget.CardView>
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="17dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/corner"
+                android:backgroundTint="@color/purple_700"
+                android:clickable="true"
+                android:drawableLeft="@drawable/baseline_search_24"
+                android:hint="  Search Coins"
+                android:maxLines="1"
+                android:outlineAmbientShadowColor="@color/white"
+                android:paddingLeft="20dp"
+                android:textAlignment="textStart"
+                tools:ignore="TouchTargetSizeCheck" />
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/homeRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.466"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:listitem="@layout/home_recycler_layout" >
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="14dp"
+                app:cardCornerRadius="20dp">
 
-        </androidx.recyclerview.widget.RecyclerView>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="162dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/banner5" />
+            </androidx.cardview.widget.CardView>
 
 
-    </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/homeRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.466"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:listitem="@layout/home_recycler_layout">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+
+        </LinearLayout>
     </ScrollView>
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

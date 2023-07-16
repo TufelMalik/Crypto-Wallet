@@ -12,6 +12,7 @@ class AccountSettings : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAccountSettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        supportActionBar!!.hide()
 
         binding.accountBackButton.setOnClickListener {
             onBackPressed()

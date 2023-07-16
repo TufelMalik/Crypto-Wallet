@@ -18,7 +18,7 @@ import com.google.firebase.database.*
 
 class CoinAdapter(
     private val context: Context,
-    private val coinList: List<CryptoCurrency>,
+    private var coinList: List<CryptoCurrency>,
 ) :
     RecyclerView.Adapter<CoinAdapter.CoinViewHolder>() {
     private lateinit var auth: FirebaseAuth
@@ -116,5 +116,10 @@ class CoinAdapter(
 
     override fun getItemCount(): Int {
         return coinList.size
+    }
+
+    fun updateData(data: List<CryptoCurrency>) {
+        coinList = data
+        notifyDataSetChanged()
     }
 }
