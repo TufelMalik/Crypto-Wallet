@@ -12,7 +12,7 @@ import java.util.Date
 data class CryptoCurrency(
     @PrimaryKey(autoGenerate = true)
 
-    val id: Long = 0L,
+    var id: Long = 0L,
     @ColumnInfo(name = "auditInfoList")
     val auditInfoList: List<AuditInfo> = emptyList(),
     @ColumnInfo(name = "circulatingSupply")
@@ -53,6 +53,4 @@ data class CryptoCurrency(
     @TypeConverters(JsonConverter_::class)
     @ColumnInfo(name = "date_added")
     var dateAdded2: Date? = null
-) : Serializable {
-    // ...
-}
+) : Serializable

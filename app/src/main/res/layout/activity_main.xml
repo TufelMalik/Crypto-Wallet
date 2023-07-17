@@ -7,13 +7,27 @@
     tools:context=".MainActivity"
     tools:menu="@menu/fav_coins_menu">
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/noInternet_animation_home"
+        android:layout_width="305dp"
+        android:layout_height="379dp"
+        android:foregroundGravity="center"
+        android:layout_margin="38dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/no_internet" />
+
 
     <me.ibrahimsn.lib.SmoothBottomBar
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:contentDescription="@string/app_name"
-        app:backgroundColor="@color/purple_700"
+        app:backgroundColor="@color/navy"
         app:cornerRadius="3dp"
         app:corners="all"
         app:iconSize="23dp"

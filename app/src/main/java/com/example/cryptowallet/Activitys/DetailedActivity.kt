@@ -1,75 +1,94 @@
 package com.example.cryptowallet.Activitys
 
 
-import CoinViewModel
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
-import com.example.cryptowallet.Classes.Constants
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
+import com.example.cryptowallet.API.ApiInterface
+import com.example.cryptowallet.API.ApiUtilities
 import com.example.cryptowallet.DataClasses.CryptoCurrency
 import com.example.cryptowallet.R
 import com.example.cryptowallet.databinding.ActivityDetailedBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class DetailedActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailedBinding
-    private lateinit var viewModel: CoinViewModel
-
-    //    private val item : DetailedActivityArgs by navArgs()
-    private var data: CryptoCurrency? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailedBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val actionBar = supportActionBar
+       supportActionBar!!.hide()
 
-        data = intent.getStringExtra("data") as? CryptoCurrency
-        if (data != null) {
-            setUpDetails(data)
+        val coinId = intent.getLongExtra("data",1027)
+        if (coinId != null) {
+            setUpDetails(coinId)
         }
         binding.backStackButton.setOnClickListener {
             onBackPressed()
         }
-        actionBar!!.hide()
-        getCoinDataFromAPI()
 
-        saveCoinOnWatchList()
+
 
     }
 
-    private fun saveCoinOnWatchList() {
-        val cb = binding.cbWatchlistDet
-//        cb.setOnCheckedChangeListener { compoundButton, b ->
-//            if(cb.isChecked){
-//                binding.cbWatchlistDet.setBackgroundColor(resources.getColor(R.color.black))
-//            }else{
-//                binding.cbWatchlistDet.setBackgroundColor(resources.getColor(R.color.gray))
-//            }
-//        }
+
+
+
+    private fun setUpDetails(coinId : Long?) {
+        if(coinId == null){
+            return
+        }
+        lifecycleScope.launch(Dispatchers.IO){
+            withContext(Dispatchers.IO) {
+                val result = ApiUtilities.getInstace().create(ApiInterface::class.java).getMarketData()
+                val data1 = result.body()!!.data.cryptoCurrencyList
+                if(data1 != null){
+                    val data = data1.find {c -> c.id == coinId }
+                    withContext(Dispatchers.Main){
+                        if(data != null){
+                            binding.circularProgressBar.visibility = View.GONE
+                            setButtonsOnClick(data)
+                            loadChart(data)
+                            binding.detailCoinFullName.text = data.name
+                            binding.detailCoinShortName.text = data.symbol
+                            Glide.with(this@DetailedActivity)
+                                .load("https://s2.coinmarketcap.com/static/img/coins/64x64/${data.id}.png")
+                                .thumbnail(Glide.with(this@DetailedActivity).load(R.drawable.loading13))
+                                .into(binding.detailImageView)
+                            binding.detailChangeTextView.text = String.format("%.2f %%", data.quotes[0].percentChange1h)
+                            binding.detailPriceTextView.text = if (data.quotes[0].price > 0) "$ "+ String.format("%.4f %%", data.quotes[0].price)  else "$ "+String.format("%.4f %%", data.quotes[0].price)
+                            checkPriceUpOrDown(data)
+                            binding.txt24DaysPrice.text = String.format("%.4f %%", data.quotes[0].percentChange24h)
+                            binding.txt7DaysPrice.text = String.format("%.4f %%", data.quotes[0].percentChange7d)
+                            binding.txt30DaysPrice.text = String.format("%.4f %%", data.quotes[0].percentChange30d)
+                            binding.txt90DaysPrice.text = String.format("%.4f %%", data.quotes[0].percentChange90d)
+                        }
+                    }
+
+                }
+            }
+        }
     }
 
-
-    private fun setUpDetails(data: CryptoCurrency?) {
-        binding.detailCoinShortName.text = data!!.name
-        binding.circularProgressBar.visibility = View.VISIBLE
-        binding.detailPriceTextView.text = data!!.id.toString()
-        binding.txt24DaysPrice.text = data!!.quotes[0].percentChange24h.toString()
-        binding.txt7DaysPrice.text = data!!.quotes[0].percentChange7d.toString()
-        binding.txt30DaysPrice.text = data!!.quotes[0].percentChange30d.toString()
-        binding.txt90DaysPrice.text = data!!.quotes[0].percentChange90d.toString()
+    private fun checkPriceUpOrDown(data: CryptoCurrency) {
+        if(data.quotes[0].percentChange1h > 0){
+            binding.detailChangeTextView.setTextColor(resources.getColor(R.color.green))
+            binding.detailChangeImageView.setImageResource(R.drawable.ic_caret_up)
+        }else{
+            binding.detailChangeTextView.setTextColor(resources.getColor(R.color.red))
+            binding.detailChangeImageView.setImageResource(R.drawable.ic_caret_down)
+        }
     }
 
-
-    private fun getCoinDataFromAPI() {
-
-        val intent = intent
-        val coinId = intent.getIntExtra("data", 1027)
-        Constants.coinID = coinId
-
-    }
 
     private fun setButtonsOnClick(coin: CryptoCurrency) {
         val oneMonth = binding.button
@@ -112,7 +131,7 @@ class DetailedActivity : AppCompatActivity() {
         binding.detaillChartWebView.settings.javaScriptEnabled = true
         binding.detaillChartWebView.setLayerType(View.LAYER_TYPE_SOFTWARE,null)
         Toast.makeText(this@DetailedActivity,coin.symbol,Toast.LENGTH_SHORT).show()
-        binding.detaillChartWebView.loadUrl(" https://s.tradingview.com/widgetembed/?frameElementId=tradingview_76d87&symbol=${coin.symbol}USD&interval=${s.toString()}&hidesidetoolbar=1&hidetoptoolbar=1&symboledit=1&saveimage=1&toolbarbg=F1F3F6&studies=[]&hideideas=1&theme=Dark&style=1&timezone=Etc%2FUTC&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]&locale=en&utm_source=coinmarketcap.com&utm_medium=widget&utm_campaign=chart&utm_term=BTCUSDT")
+        binding.detaillChartWebView.loadUrl("https://s.tradingview.com/widgetembed/?frameElementId=tradingview_76d87&symbol=${coin.symbol}USD&interval=${s.toString()}&hidesidetoolbar=1&hidetoptoolbar=1&symboledit=1&saveimage=1&toolbarbg=F1F3F6&studies=[]&hideideas=1&theme=Dark&style=1&timezone=Etc%2FUTC&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]&locale=en&utm_source=coinmarketcap.com&utm_medium=widget&utm_campaign=chart&utm_term=BTCUSDT")
 
 
     }
@@ -128,9 +147,12 @@ class DetailedActivity : AppCompatActivity() {
     private fun loadChart(coin: CryptoCurrency) {
         binding.detaillChartWebView.settings.javaScriptEnabled = true
         binding.detaillChartWebView.setLayerType(View.LAYER_TYPE_SOFTWARE,null)
-        binding.detaillChartWebView.loadUrl(" https://s.tradingview.com/widgetembed/?frameElementId=tradingview_76d87&symbol=${coin.symbol}USD&interval=D&hidesidetoolbar=1&hidetoptoolbar=1&symboledit=1&saveimage=1&toolbarbg=F1F3F6&studies=[]&hideideas=1&theme=Dark&style=1&timezone=Etc%2FUTC&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]&locale=en&utm_source=coinmarketcap.com&utm_medium=widget&utm_campaign=chart&utm_term=BTCUSDT")
+        binding.detaillChartWebView.loadUrl(getChartUrl(coin.symbol))
 
+    }
 
+    private fun getChartUrl(symbol: String?): String {
+         return "https://s.tradingview.com/widgetembed/?frameElementId=tradingview_76d87&symbol=${symbol}USD&interval=D&hidesidetoolbar=1&hidetoptoolbar=1&symboledit=1&saveimage=1&toolbarbg=F1F3F6&studies=[]&hideideas=1&theme=Dark&style=1&timezone=Etc%2FUTC&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]&locale=en&utm_source=coinmarketcap.com&utm_medium=widget&utm_campaign=chart&utm_term=BTCUSDT"
     }
 
 

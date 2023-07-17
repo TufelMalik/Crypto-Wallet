@@ -9,7 +9,6 @@
     android:outlineAmbientShadowColor="@color/white"
     android:backgroundTint="@color/white"
     app:cardCornerRadius="18dp"
-    app:cardPreventCornerOverlap="true"
     android:layout_gravity="center_vertical"
     android:layout_height="wrap_content">
 
@@ -17,7 +16,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="190dp"
         android:layout_height="251dp"
-        android:background="@color/black"
+        android:background="@color/royal_blue_dark"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -87,15 +86,17 @@
 
         <CheckBox
             android:id="@+id/idSaveCoinLay"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:checked="false"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
             android:button="@drawable/fav_coin__drawable"
+            android:checked="false"
+            android:minWidth="48dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/idCoinImageLay"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.095" />
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/idCoinNameLay"
