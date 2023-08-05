@@ -115,16 +115,7 @@ class SavedCoinAdapter(
         notifyDataSetChanged()
     }
 
-    private fun saveDataOnDB(name: String?, id: Long) {
-        auth = FirebaseAuth.getInstance()
-        db = FirebaseDatabase.getInstance().getReference("FavCoin").child(auth.currentUser!!.uid)
 
-        db.child(name!!)
-            .setValue(id)
-            .addOnCompleteListener {
-                Toast.makeText(context, "$name Coin Saved", Toast.LENGTH_SHORT).show()
-            }
-    }
 
     private fun removeDataFromDB(id: Long) {
         auth = FirebaseAuth.getInstance()

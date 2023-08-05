@@ -61,7 +61,7 @@ class FavCoinActivity : AppCompatActivity() {
                                     coinList.add(it)
                                 }
                             }
-                            binding.favCoinRV.adapter = CoinAdapter(this@FavCoinActivity,coinList,sharedPrefsHelper)
+                            binding.favCoinRV.adapter = CoinAdapter(this@FavCoinActivity,coinList)
                             binding.favCoinRV.layoutManager = GridLayoutManager(this@FavCoinActivity,2)
                         }
 

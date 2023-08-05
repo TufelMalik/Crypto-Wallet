@@ -1,12 +1,11 @@
 package com.example.cryptowallet.Activitys
 
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.cryptowallet.API.ApiInterface
@@ -15,8 +14,11 @@ import com.example.cryptowallet.DataClasses.CryptoCurrency
 import com.example.cryptowallet.R
 import com.example.cryptowallet.databinding.ActivityDetailedBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -25,34 +27,45 @@ class DetailedActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailedBinding
     private lateinit var auth : FirebaseAuth
     private lateinit var db : DatabaseReference
+    private lateinit var coinList : ArrayList<CryptoCurrency>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailedBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        auth = FirebaseAuth.getInstance()
+        db = FirebaseDatabase.getInstance().getReference("FavCoin").child(auth.currentUser!!.uid)
 
        supportActionBar!!.hide()
 
 
         val coinId = intent.getLongExtra("data",1027)
-        if (coinId != null) {
-            setUpDetails(coinId)
-        }
+        setUpDetails(coinId)
         binding.backStackButton.setOnClickListener {
             onBackPressed()
         }
 
     }
 
-    private fun saveDataOnDB(name: String?, id: Long) {
+
+    private fun removeDataFromDB(id: Long) {
         auth = FirebaseAuth.getInstance()
         db = FirebaseDatabase.getInstance().getReference("FavCoin").child(auth.currentUser!!.uid)
 
-        db.child(name!!)
-            .setValue(id)
-            .addOnCompleteListener {
-                Toast.makeText(this@DetailedActivity, "$name Coin Saved", Toast.LENGTH_SHORT).show()
+        db.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (id1 in snapshot.children) {
+                    val data = id1.getValue(Int::class.java)
+                    if (data!!.toLong() == id) {
+                        id1.ref.removeValue()
+                    }
+                }
             }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle onCancelled if needed
+            }
+        })
     }
 
 
@@ -64,35 +77,64 @@ class DetailedActivity : AppCompatActivity() {
             withContext(Dispatchers.IO) {
                 val result = ApiUtilities.getInstace().create(ApiInterface::class.java).getMarketData()
                 val data1 = result.body()!!.data.cryptoCurrencyList
-                if(data1 != null){
-                    val data = data1.find {c -> c.id == coinId }
-                    withContext(Dispatchers.Main){
-                        if(data != null){
-                            binding.circularProgressBar.visibility = View.GONE
-                            setButtonsOnClick(data)
-                            loadChart(data)
-                            if(binding.cbWatchlistDet.callOnClick()){
-                                saveDataOnDB(data.name,data.id)
-                            }
-                            binding.detailCoinFullName.text = data.name
-                            binding.detailCoinShortName.text = data.symbol
-                            Glide.with(this@DetailedActivity)
-                                .load("https://s2.coinmarketcap.com/static/img/coins/64x64/${data.id}.png")
-                                .thumbnail(Glide.with(this@DetailedActivity).load(R.drawable.loading13))
-                                .into(binding.detailImageView)
-                            binding.detailChangeTextView.text = String.format("%.2f %%", data.quotes[0].percentChange1h)
-                            binding.detailPriceTextView.text = if (data.quotes[0].price > 0) "$ "+ String.format("%.4f %%", data.quotes[0].price)  else "$ "+String.format("%.4f %%", data.quotes[0].price)
-                            checkPriceUpOrDown(data)
-                            binding.txt24DaysPrice.text = String.format("%.4f %%", data.quotes[0].percentChange24h)
-                            binding.txt7DaysPrice.text = String.format("%.4f %%", data.quotes[0].percentChange7d)
-                            binding.txt30DaysPrice.text = String.format("%.4f %%", data.quotes[0].percentChange30d)
-                            binding.txt90DaysPrice.text = String.format("%.4f %%", data.quotes[0].percentChange90d)
+                val data = data1.find {c -> c.id == coinId }
+                withContext(Dispatchers.Main){
+                    if(data != null){
+                        binding.circularProgressBar.visibility = View.GONE
+                        setWatchListbuttonChecked()
+                        setButtonsOnClick(data)
+                        loadChart(data)
+                        if(binding.cbWatchlistDet.callOnClick()){
+                                Toast.makeText(this@DetailedActivity,"Removed",Toast.LENGTH_SHORT).show()
+                                removeDataFromDB(data.id)
                         }
+                        binding.detailCoinFullName.text = data.name
+                        binding.detailCoinShortName.text = data.symbol
+                        Glide.with(this@DetailedActivity)
+                            .load("https://s2.coinmarketcap.com/static/img/coins/64x64/${data.id}.png")
+                            .thumbnail(Glide.with(this@DetailedActivity).load(R.drawable.loading13))
+                            .into(binding.detailImageView)
+                        binding.detailChangeTextView.text = String.format("%.2f %%", data.quotes[0].percentChange1h)
+                        binding.detailPriceTextView.text = if (data.quotes[0].price > 0) "$ "+ String.format("%.4f %%", data.quotes[0].price)  else "$ "+String.format("%.4f %%", data.quotes[0].price)
+                        checkPriceUpOrDown(data)
+                        binding.txt24DaysPrice.text = String.format("%.4f %%", data.quotes[0].percentChange24h)
+                        binding.txt7DaysPrice.text = String.format("%.4f %%", data.quotes[0].percentChange7d)
+                        binding.txt30DaysPrice.text = String.format("%.4f %%", data.quotes[0].percentChange30d)
+                        binding.txt90DaysPrice.text = String.format("%.4f %%", data.quotes[0].percentChange90d)
                     }
-
                 }
+
             }
         }
+    }
+
+    private fun setWatchListbuttonChecked() {
+            db.addValueEventListener(object :
+                ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        val res = ApiUtilities.getInstace().create(ApiInterface::class.java)
+                            .getMarketData()
+                        coinList = ArrayList()
+                        withContext(Dispatchers.Main) {
+                            val apiDataList = res.body()?.data?.cryptoCurrencyList
+                            if (apiDataList != null) {
+                                for (snapshot1 in snapshot.children) {
+                                    val savedCoinsId = snapshot1.getValue(Long::class.java)
+                                    val matchingCoin = apiDataList.find { it.id == savedCoinsId }
+                                    matchingCoin?.let {
+                                        binding.cbWatchlistDet.isChecked = true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            })
     }
 
     private fun checkPriceUpOrDown(data: CryptoCurrency) {
@@ -146,7 +188,7 @@ class DetailedActivity : AppCompatActivity() {
         it!!.setBackgroundResource(R.drawable.active_button)
         binding.detaillChartWebView.settings.javaScriptEnabled = true
         binding.detaillChartWebView.setLayerType(View.LAYER_TYPE_SOFTWARE,null)
-        binding.detaillChartWebView.loadUrl("https://s.tradingview.com/widgetembed/?frameElementId=tradingview_76d87&symbol=${coin.symbol}USD&interval=${s.toString()}&hidesidetoolbar=1&hidetoptoolbar=1&symboledit=1&saveimage=1&toolbarbg=F1F3F6&studies=[]&hideideas=1&theme=Dark&style=1&timezone=Etc%2FUTC&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]&locale=en&utm_source=coinmarketcap.com&utm_medium=widget&utm_campaign=chart&utm_term=BTCUSDT")
+        binding.detaillChartWebView.loadUrl("https://s.tradingview.com/widgetembed/?frameElementId=tradingview_76d87&symbol=${coin.symbol}USD&interval=${s}&hidesidetoolbar=1&hidetoptoolbar=1&symboledit=1&saveimage=1&toolbarbg=F1F3F6&studies=[]&hideideas=1&theme=Dark&style=1&timezone=Etc%2FUTC&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]&locale=en&utm_source=coinmarketcap.com&utm_medium=widget&utm_campaign=chart&utm_term=BTCUSDT")
 
 
     }

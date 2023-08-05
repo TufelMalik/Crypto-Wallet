@@ -1,14 +1,12 @@
 package com.example.cryptowallet.Fragments
 
 import CoinAdapter
-import SavedCoinAdapter
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.*
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -21,7 +19,11 @@ import com.example.cryptowallet.DataClasses.CryptoCurrency
 import com.example.cryptowallet.R
 import com.example.cryptowallet.databinding.FragmentHomeBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -33,8 +35,6 @@ class HomeFragment : Fragment() {
     private lateinit var database : FirebaseDatabase
     private lateinit var userId : String
     private lateinit var adapter : CoinAdapter
-    private lateinit var sharedPrefsHelper: SharedPrefsHelper
-    private lateinit var savedCoinAdapter: SavedCoinAdapter
     private lateinit var dataList: List<CryptoCurrency>
 
 
@@ -51,7 +51,6 @@ class HomeFragment : Fragment() {
         binding.homeRecyclerView.setBackgroundColor(resources.getColor(R.color.black))
         binding.backHomeFragment.setBackgroundColor(resources.getColor(R.color.black))
         binding.homeProgressBar.visibility = View.GONE
-        sharedPrefsHelper = SharedPrefsHelper(requireContext())
         return binding.root
     }
 
@@ -68,10 +67,8 @@ class HomeFragment : Fragment() {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
-
-            @SuppressLint("SuspiciousIndentation")
             override fun afterTextChanged(p0: Editable?) {
-              searchText = p0.toString().lowercase()
+                searchText = p0.toString().lowercase()
                 updateRecyclerView()
             }
 
@@ -91,7 +88,7 @@ class HomeFragment : Fragment() {
             binding.backHomeFragment.setBackgroundColor(resources.getColor(R.color.black))
             binding.homeRecyclerView.visibility = View.GONE
             binding.txtResult.visibility = View.VISIBLE
-            binding.txtResult.text= "Coin Not Found !"
+            binding.txtResult.text= getString(R.string.coin_not_found)
             binding.notFoundAnimationHome.visibility = View.VISIBLE
         } else {
             binding.homeRecyclerView.visibility = View.VISIBLE
@@ -99,8 +96,6 @@ class HomeFragment : Fragment() {
             adapter.updateData(data)
         }
     }
-
-
 
     private fun callApiGetData() {
         binding.homeProgressBar.visibility = View.VISIBLE
@@ -112,19 +107,20 @@ class HomeFragment : Fragment() {
                     binding.homeRecyclerView.setBackgroundColor(resources.getColor(R.color.black))
                     binding.homeProgressBar.visibility = View.GONE
 
-                    adapter = CoinAdapter(requireContext(), dataList,sharedPrefsHelper)
+                    adapter = CoinAdapter(requireContext(), dataList)
                     binding.homeRecyclerView.adapter = adapter
                     Log.d("Tufel", dataList.toString())
                     Tufel.setRVLayoutOrientationManger(
-                            resources.configuration.orientation,
-                            requireContext(),
-                            binding.homeRecyclerView
-                        )
-                    }
+                        resources.configuration.orientation,
+                        requireContext(),
+                        binding.homeRecyclerView
+                    )
                 }
-
             }
+
+        }
     }
+
     private fun checkInternet() {
         if(Tufel.isOnline(requireContext())){
             binding.notFoundAnimationHome.visibility = View.GONE
@@ -150,5 +146,4 @@ class HomeFragment : Fragment() {
         super.onResume()
         checkInternet()
     }
-
 }

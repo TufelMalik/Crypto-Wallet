@@ -1,5 +1,6 @@
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cryptowallet.Activitys.DetailedActivity
-import com.example.cryptowallet.Classes.SharedPrefsHelper
 import com.example.cryptowallet.DataClasses.CryptoCurrency
 import com.example.cryptowallet.R
 import com.google.firebase.auth.FirebaseAuth
@@ -19,8 +19,7 @@ import com.google.firebase.database.*
 
 class CoinAdapter(
     private val context: Context,
-    private var coinList: List<CryptoCurrency>,
-    private val sharedPrefsHelper: SharedPrefsHelper
+    private var coinList: List<CryptoCurrency>
 ) :
     RecyclerView.Adapter<CoinAdapter.CoinViewHolder>() {
     private lateinit var auth: FirebaseAuth
@@ -64,15 +63,10 @@ class CoinAdapter(
         holder.coinName.text = item.name
         holder.coinSortName.text = item.symbol
         holder.coinLivePrice.text = item.quotes[0].price.toString()
-
-        val selectedCoinIds = sharedPrefsHelper.getSelectedCoinIds()
-        holder.coinFavCB.isChecked = item.id in selectedCoinIds
-
-
+        isCheckBoxIsSaved(item,holder.coinFavCB)
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, DetailedActivity::class.java)
-            Toast.makeText(context, item.id.toString(), Toast.LENGTH_SHORT).show()
             intent.putExtra("data", item.id)
             context.startActivity(intent)
         }
@@ -100,6 +94,32 @@ class CoinAdapter(
             .thumbnail(Glide.with(context).load(R.drawable.loading13))
             .into(holder.coinChangePrice)
     }
+
+    private fun isCheckBoxIsSaved(data: CryptoCurrency, coinFavCB: CheckBox) {
+        auth = FirebaseAuth.getInstance()
+        db = FirebaseDatabase.getInstance().getReference("FavCoin").child(auth.currentUser!!.uid)
+
+        db.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val savedCoins = ArrayList<Long>()
+                for(snap in snapshot.children){
+                    val savedCoinsId = snap.getValue(Long::class.java)
+                    savedCoins.add(savedCoinsId!!)
+                }
+                if(data.id == savedCoins.get(0)){
+                   coinFavCB.isChecked= true
+                }
+
+                Log.d("CoinAdapter","Matched Coin is Check Now : $savedCoins")
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Log.d("CoinAdapter",error.toString())
+
+            }
+
+        })
+    }
+
     fun updateCheckboxState(position: Int, isChecked: Boolean) {
         coinList[position].isChecked = isChecked
         notifyItemChanged(position)
@@ -119,7 +139,7 @@ class CoinAdapter(
         db.child(name!!)
             .setValue(id)
             .addOnCompleteListener {
-                Toast.makeText(context, "$name Coin Saved", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(context, "$name Coin Saved", Toast.LENGTH_SHORT).show()
             }
     }
 

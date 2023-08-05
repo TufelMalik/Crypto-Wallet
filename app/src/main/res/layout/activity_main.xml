@@ -4,40 +4,75 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context=".MainActivity">
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/noInternet_animation_home"
-        android:layout_width="305dp"
-        android:layout_height="379dp"
-        android:foregroundGravity="center"
-        android:layout_margin="38dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/no_internet" />
-
-
-    <me.ibrahimsn.lib.SmoothBottomBar
-        android:id="@+id/bottomBar"
+    <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:contentDescription="@string/app_name"
-        app:backgroundColor="@color/navy"
-        app:cornerRadius="3dp"
-        app:corners="all"
-        app:iconSize="23dp"
-        app:iconTint="@color/white"
-        app:itemFontFamily="@font/alike_angular"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/purple_700"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottomnav"
-        app:textSize="12sp" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgLogoHeading"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/cyrpto_logo"
+            app:civ_border_color="@color/purple_700"
+            app:civ_border_width="2dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+            />
+        <TextView
+            android:id="@+id/txtHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:fontFamily="@font/amethysta"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+
+            />
+    </LinearLayout>
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/noInternet_animation_home"
+            android:layout_width="305dp"
+            android:layout_height="379dp"
+            android:foregroundGravity="center"
+            android:layout_margin="38dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/no_internet" />
+
+
+        <me.ibrahimsn.lib.SmoothBottomBar
+            android:id="@+id/bottomBar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:contentDescription="@string/app_name"
+            app:backgroundColor="@color/navy"
+            app:cornerRadius="3dp"
+            app:corners="all"
+            app:iconSize="23dp"
+            app:iconTint="@color/white"
+            app:itemFontFamily="@font/alike_angular"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/bottomnav"
+            app:textSize="12sp" />
 
     <FrameLayout
         android:id="@+id/mainContainer"
@@ -48,7 +83,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
         app:layout_constraintVertical_bias="0.0">
 
     </FrameLayout>

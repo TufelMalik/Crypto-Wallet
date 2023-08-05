@@ -1,5 +1,6 @@
 package com.example.cryptowallet.Fragments
 
+import CoinAdapter
 import SavedCoinAdapter
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -40,7 +41,6 @@ class SavedCoinsFragment : Fragment() {
         userId= auth.currentUser!!.uid.toString()
         sharedPrefsHelper = SharedPrefsHelper(requireContext())
         sharedPrefsHelper.setSelectedCoinIds(setOf())
-
         getDataFromDB()
 
 
@@ -57,10 +57,8 @@ class SavedCoinsFragment : Fragment() {
                 lifecycleScope.launch(Dispatchers.IO) {
                     val res = ApiUtilities.getInstace().create(ApiInterface::class.java).getMarketData()
                     coinList = ArrayList()
-
                     withContext(Dispatchers.Main) {
                         val apiDataList = res.body()?.data?.cryptoCurrencyList
-
                         if (apiDataList != null) {
                             for (snapshot1 in snapshot.children) {
                                 val savedCoinsId = snapshot1.getValue(Long::class.java)
@@ -68,7 +66,9 @@ class SavedCoinsFragment : Fragment() {
                                 matchingCoin?.let {
                                     coinList.add(it)
                                 }
+
                             }
+
                             binding.savedCoinsRecyclerView.adapter = SavedCoinAdapter(context!!,coinList)
                             binding.savedCoinsRecyclerView.layoutManager = LinearLayoutManager(context)
                         }
@@ -77,7 +77,7 @@ class SavedCoinsFragment : Fragment() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+
             }
         })
     }
