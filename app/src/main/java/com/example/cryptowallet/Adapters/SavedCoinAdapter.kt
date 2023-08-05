@@ -39,11 +39,9 @@ class SavedCoinAdapter(
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val item = coinList[position]
-                    item.isChecked = isChecked
+                    item.isChecked = true
 
-                    if (isChecked) {
-                        saveDataOnDB(item.name, item.id)
-                    } else {
+                  if(!isChecked){
                         removeDataFromDB(item.id)
                     }
                 }
@@ -63,9 +61,7 @@ class SavedCoinAdapter(
 
         holder.coinName.text = item.name
         holder.coinLivePrice.text = item.quotes[0].price.toString()
-        holder.coinFavCB.isChecked = item.isChecked
-
-        // ... Rest of your onBindViewHolder code ...
+        holder.coinFavCB.isChecked = true
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, DetailedActivity::class.java)

@@ -113,7 +113,6 @@ class HomeFragment : Fragment() {
                     binding.homeProgressBar.visibility = View.GONE
 
                     adapter = CoinAdapter(requireContext(), dataList,sharedPrefsHelper)
-                    adapter.updateCheckboxState(0, true)
                     binding.homeRecyclerView.adapter = adapter
                     Log.d("Tufel", dataList.toString())
                     Tufel.setRVLayoutOrientationManger(

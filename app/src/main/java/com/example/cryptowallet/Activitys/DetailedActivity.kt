@@ -14,12 +14,17 @@ import com.example.cryptowallet.API.ApiUtilities
 import com.example.cryptowallet.DataClasses.CryptoCurrency
 import com.example.cryptowallet.R
 import com.example.cryptowallet.databinding.ActivityDetailedBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class DetailedActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailedBinding
+    private lateinit var auth : FirebaseAuth
+    private lateinit var db : DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +33,7 @@ class DetailedActivity : AppCompatActivity() {
 
        supportActionBar!!.hide()
 
+
         val coinId = intent.getLongExtra("data",1027)
         if (coinId != null) {
             setUpDetails(coinId)
@@ -35,6 +41,18 @@ class DetailedActivity : AppCompatActivity() {
         binding.backStackButton.setOnClickListener {
             onBackPressed()
         }
+
+    }
+
+    private fun saveDataOnDB(name: String?, id: Long) {
+        auth = FirebaseAuth.getInstance()
+        db = FirebaseDatabase.getInstance().getReference("FavCoin").child(auth.currentUser!!.uid)
+
+        db.child(name!!)
+            .setValue(id)
+            .addOnCompleteListener {
+                Toast.makeText(this@DetailedActivity, "$name Coin Saved", Toast.LENGTH_SHORT).show()
+            }
     }
 
 
@@ -53,6 +71,9 @@ class DetailedActivity : AppCompatActivity() {
                             binding.circularProgressBar.visibility = View.GONE
                             setButtonsOnClick(data)
                             loadChart(data)
+                            if(binding.cbWatchlistDet.callOnClick()){
+                                saveDataOnDB(data.name,data.id)
+                            }
                             binding.detailCoinFullName.text = data.name
                             binding.detailCoinShortName.text = data.symbol
                             Glide.with(this@DetailedActivity)

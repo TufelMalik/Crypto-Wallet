@@ -25,6 +25,7 @@ class CoinAdapter(
     RecyclerView.Adapter<CoinAdapter.CoinViewHolder>() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: DatabaseReference
+    private val checkboxStates = MutableList(coinList.size) { false }
 
     inner class CoinViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val coinImg: ImageView = itemView.findViewById(R.id.idCoinImageLay)
