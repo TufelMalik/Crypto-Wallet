@@ -1,6 +1,7 @@
 package com.example.cryptowallet.Fragments
 
 import CoinAdapter
+import SavedCoinAdapter
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
@@ -14,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import com.airbnb.lottie.LottieAnimationView
 import com.example.cryptowallet.API.ApiInterface
 import com.example.cryptowallet.API.ApiUtilities
+import com.example.cryptowallet.Classes.SharedPrefsHelper
 import com.example.cryptowallet.Classes.Tufel
 import com.example.cryptowallet.DataClasses.CryptoCurrency
 import com.example.cryptowallet.R
@@ -31,7 +33,8 @@ class HomeFragment : Fragment() {
     private lateinit var database : FirebaseDatabase
     private lateinit var userId : String
     private lateinit var adapter : CoinAdapter
-//    private lateinit var coinViewModel : CoinViewModel
+    private lateinit var sharedPrefsHelper: SharedPrefsHelper
+    private lateinit var savedCoinAdapter: SavedCoinAdapter
     private lateinit var dataList: List<CryptoCurrency>
 
 
@@ -48,7 +51,7 @@ class HomeFragment : Fragment() {
         binding.homeRecyclerView.setBackgroundColor(resources.getColor(R.color.black))
         binding.backHomeFragment.setBackgroundColor(resources.getColor(R.color.black))
         binding.homeProgressBar.visibility = View.GONE
-
+        sharedPrefsHelper = SharedPrefsHelper(requireContext())
         return binding.root
     }
 
@@ -98,35 +101,6 @@ class HomeFragment : Fragment() {
     }
 
 
-//    private fun getDataFromDB() {
-//        database.getReference("FavCoin").child(userId).addValueEventListener(object : ValueEventListener {
-//            override fun onDataChange(snapshot: DataSnapshot) {
-//                for (snapshot1 in snapshot.children) {
-//                    val coins = snapshot1.getValue(Int::class.java) // Retrieve coin ID as Int
-//                    lifecycleScope.launch(Dispatchers.Main) {
-//                        val data = ApiUtilities.getInstace().create(ApiInterface::class.java).getMarketData()
-//                            binding.homeProgressBar.visibility = View.GONE
-//                            val coinList = data.body()!!.data.cryptoCurrencyList
-//                             Log.d("Tufe", coins.toString())
-//                            homeViewModel.currencyList.observe(viewLifecycleOwner){
-//                                binding.homeRecyclerView.adapter = CoinAdapter(requireContext(), coinList)
-//
-//                            Tufel.setRVLayoutOrientationManger(resources.configuration.orientation,requireContext(),binding.homeRecyclerView)
-//                        }
-//                    }
-//                }
-//            }
-//
-//            override fun onCancelled(error: DatabaseError) {
-//                // Handle onCancelled event
-//            }
-//        })
-//    }
-
-
-
-
-
 
     private fun callApiGetData() {
         binding.homeProgressBar.visibility = View.VISIBLE
@@ -137,7 +111,9 @@ class HomeFragment : Fragment() {
                 if (dataList != null) {
                     binding.homeRecyclerView.setBackgroundColor(resources.getColor(R.color.black))
                     binding.homeProgressBar.visibility = View.GONE
-                    adapter = CoinAdapter(requireContext(), dataList)
+
+                    adapter = CoinAdapter(requireContext(), dataList,sharedPrefsHelper)
+                    adapter.updateCheckboxState(0, true)
                     binding.homeRecyclerView.adapter = adapter
                     Log.d("Tufel", dataList.toString())
                     Tufel.setRVLayoutOrientationManger(

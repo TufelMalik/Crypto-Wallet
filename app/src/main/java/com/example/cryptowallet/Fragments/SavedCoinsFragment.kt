@@ -1,18 +1,20 @@
-package com.example.cryptowallet.Activitys
+package com.example.cryptowallet.Fragments
 
-import CoinAdapter
 import SavedCoinAdapter
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cryptowallet.API.ApiInterface
 import com.example.cryptowallet.API.ApiUtilities
 import com.example.cryptowallet.Classes.SharedPrefsHelper
 import com.example.cryptowallet.Classes.Tufel
 import com.example.cryptowallet.DataClasses.CryptoCurrency
-import com.example.cryptowallet.databinding.ActivityFavCoinBinding
+import com.example.cryptowallet.databinding.FragmentSavedCoinsBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -22,29 +24,35 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class FavCoinActivity : AppCompatActivity() {
-    private lateinit var binding : ActivityFavCoinBinding
+class SavedCoinsFragment : Fragment() {
+    private lateinit var binding: FragmentSavedCoinsBinding
     private lateinit var auth : FirebaseAuth
     private lateinit var database : FirebaseDatabase
     private lateinit var userId : String
     private lateinit var sharedPrefsHelper: SharedPrefsHelper
-    private lateinit var savedCoinAdapter: SavedCoinAdapter
     private lateinit var coinList : ArrayList<CryptoCurrency>
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityFavCoinBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance()
         userId= auth.currentUser!!.uid.toString()
-        sharedPrefsHelper = SharedPrefsHelper(this)
+        sharedPrefsHelper = SharedPrefsHelper(requireContext())
+        sharedPrefsHelper.setSelectedCoinIds(setOf())
+
         getDataFromDB()
 
 
+        binding = FragmentSavedCoinsBinding.inflate(inflater, container, false)
+        return binding.root
 
-    }private fun getDataFromDB() {
-        database.getReference("FavCoin").child(userId).addValueEventListener(object : ValueEventListener {
+
+
+    }
+    private fun getDataFromDB() {
+        database.getReference("FavCoin").child(userId).addValueEventListener(object :
+            ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 lifecycleScope.launch(Dispatchers.IO) {
                     val res = ApiUtilities.getInstace().create(ApiInterface::class.java).getMarketData()
@@ -61,13 +69,9 @@ class FavCoinActivity : AppCompatActivity() {
                                     coinList.add(it)
                                 }
                             }
-                            binding.favCoinRV.adapter = CoinAdapter(this@FavCoinActivity,coinList,sharedPrefsHelper)
-                            binding.favCoinRV.layoutManager = GridLayoutManager(this@FavCoinActivity,2)
+                            binding.savedCoinsRecyclerView.adapter = SavedCoinAdapter(context!!,coinList)
+                            binding.savedCoinsRecyclerView.layoutManager = LinearLayoutManager(context)
                         }
-
-                        // Now, you can use the coinList for further processing
-                        // For example, pass it to the RecyclerView adapter and set the layout manager
-                        Tufel.setRVLayoutOrientationManger(resources.configuration.orientation, this@FavCoinActivity, binding.favCoinRV)
                     }
                 }
             }
@@ -80,8 +84,9 @@ class FavCoinActivity : AppCompatActivity() {
 
 
 
-    override fun onBackPressed() {
-        super.onBackPressed()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
 
     }
 }

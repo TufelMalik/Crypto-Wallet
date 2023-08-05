@@ -35,12 +35,7 @@ class DetailedActivity : AppCompatActivity() {
         binding.backStackButton.setOnClickListener {
             onBackPressed()
         }
-
-
-
     }
-
-
 
 
     private fun setUpDetails(coinId : Long?) {
@@ -130,7 +125,6 @@ class DetailedActivity : AppCompatActivity() {
         it!!.setBackgroundResource(R.drawable.active_button)
         binding.detaillChartWebView.settings.javaScriptEnabled = true
         binding.detaillChartWebView.setLayerType(View.LAYER_TYPE_SOFTWARE,null)
-        Toast.makeText(this@DetailedActivity,coin.symbol,Toast.LENGTH_SHORT).show()
         binding.detaillChartWebView.loadUrl("https://s.tradingview.com/widgetembed/?frameElementId=tradingview_76d87&symbol=${coin.symbol}USD&interval=${s.toString()}&hidesidetoolbar=1&hidetoptoolbar=1&symboledit=1&saveimage=1&toolbarbg=F1F3F6&studies=[]&hideideas=1&theme=Dark&style=1&timezone=Etc%2FUTC&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]&locale=en&utm_source=coinmarketcap.com&utm_medium=widget&utm_campaign=chart&utm_term=BTCUSDT")
 
 

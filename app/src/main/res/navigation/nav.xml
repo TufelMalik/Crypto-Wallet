@@ -13,9 +13,9 @@
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/walletFragment"
-        android:name="com.example.cryptowallet.Fragments.WalletFragment"
+        android:name="com.example.cryptowallet.Fragments.SavedCoinsFragment"
         android:label="fragment_wallet"
-        tools:layout="@layout/fragment_wallet" />
+        tools:layout="@layout/fragment_saved_coins" />
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.cryptowallet.Fragments.HomeFragment"

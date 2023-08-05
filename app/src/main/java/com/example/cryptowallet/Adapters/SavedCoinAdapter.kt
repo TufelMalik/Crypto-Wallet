@@ -3,6 +3,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
@@ -11,28 +12,27 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cryptowallet.Activitys.DetailedActivity
-import com.example.cryptowallet.Classes.SharedPrefsHelper
 import com.example.cryptowallet.DataClasses.CryptoCurrency
 import com.example.cryptowallet.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
-class CoinAdapter(
+class SavedCoinAdapter(
     private val context: Context,
     private var coinList: List<CryptoCurrency>,
-    private val sharedPrefsHelper: SharedPrefsHelper
 ) :
-    RecyclerView.Adapter<CoinAdapter.CoinViewHolder>() {
+    RecyclerView.Adapter<SavedCoinAdapter.SavedCoinViewHolder>() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: DatabaseReference
 
-    inner class CoinViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val coinImg: ImageView = itemView.findViewById(R.id.idCoinImageLay)
-        val coinName: TextView = itemView.findViewById(R.id.idCoinNameLay)
-        val coinSortName: TextView = itemView.findViewById(R.id.idCoinSortNameLay)
-        val coinLivePrice: TextView = itemView.findViewById(R.id.idCoinLivePriceLay)
-        val coinFavCB: CheckBox = itemView.findViewById(R.id.idSaveCoinLay)
-        val coinChangePrice: ImageView = itemView.findViewById(R.id.idCoinPriceChangeLay)
+    inner class SavedCoinViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val coinImg: ImageView = itemView.findViewById(R.id.imgCoinImageFav_layout)
+        val coinName: TextView = itemView.findViewById(R.id.txtCoinName_Layout)
+        val coinLivePrice: TextView = itemView.findViewById(R.id.txtCoinPrice_layout)
+        val coinFavCB: CheckBox = itemView.findViewById(R.id.cbFav_layout)
+        val webView : WebView = itemView.findViewById(R.id.detaillChartWebView)
+        val detailChangeImageView : ImageView = itemView.findViewById(R.id.detailChangeImageView)
+
 
         init {
             coinFavCB.setOnCheckedChangeListener { _, isChecked ->
@@ -51,23 +51,21 @@ class CoinAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoinViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SavedCoinViewHolder {
         val itemView =
-            LayoutInflater.from(context).inflate(R.layout.home_recycler_layout, parent, false)
-        return CoinViewHolder(itemView)
+            LayoutInflater.from(context).inflate(R.layout.fav_coins_layout, parent, false)
+        return SavedCoinViewHolder(itemView)
     }
 
-    override fun onBindViewHolder(holder: CoinViewHolder, position: Int) {
+
+    override fun onBindViewHolder(holder: SavedCoinViewHolder, position: Int) {
         val item = coinList[position]
 
         holder.coinName.text = item.name
-        holder.coinSortName.text = item.symbol
         holder.coinLivePrice.text = item.quotes[0].price.toString()
+        holder.coinFavCB.isChecked = item.isChecked
 
-        val selectedCoinIds = sharedPrefsHelper.getSelectedCoinIds()
-        holder.coinFavCB.isChecked = item.id in selectedCoinIds
-
-
+        // ... Rest of your onBindViewHolder code ...
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, DetailedActivity::class.java)
@@ -93,15 +91,25 @@ class CoinAdapter(
                 "%.2f %%",
                 percentChange1h
             )
+        if(item.quotes[0].percentChange1h > 0){
+            holder.detailChangeImageView.setImageResource(R.drawable.ic_caret_up)
+        }else{
+            holder.detailChangeImageView.setImageResource(R.drawable.ic_caret_down)
+        }
+      setWebView(item.symbol,item.id,holder.webView)
 
-        Glide.with(context)
-            .load("https://s3.coinmarketcap.com/generated/sparklines/web/7d/usd/${item.id}.png")
-            .thumbnail(Glide.with(context).load(R.drawable.loading13))
-            .into(holder.coinChangePrice)
+
     }
-    fun updateCheckboxState(position: Int, isChecked: Boolean) {
-        coinList[position].isChecked = isChecked
-        notifyItemChanged(position)
+
+    private fun setWebView(symbol: String?, id: Long, webView : WebView) {
+        webView.settings.javaScriptEnabled = true
+        webView.setLayerType(View.LAYER_TYPE_SOFTWARE,null)
+        webView.loadUrl(getChartUrl(symbol))
+    }
+
+    private fun getChartUrl(symbol: String?): String {
+       return "https://s.tradingview.com/widgetembed/?frameElementId=tradingview_76d87&symbol=${symbol}USD&interval=15&hidesidetoolbar=1&hidetoptoolbar=1&symboledit=1&saveimage=1&toolbarbg=F1F3F6&studies=[]&hideideas=1&theme=Dark&style=1&timezone=Etc%2FUTC&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]&locale=en&utm_source=coinmarketcap.com&utm_medium=widget&utm_campaign=chart&utm_term=BTCUSDT"
+
     }
 
     override fun getItemCount() = coinList.size

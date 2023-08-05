@@ -9,6 +9,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/favCoinRV"
+        tools:listitem="@layout/fav_coins_layout"
         android:layout_width="409dp"
         android:layout_height="729dp"
         app:layout_constraintBottom_toBottomOf="parent"
