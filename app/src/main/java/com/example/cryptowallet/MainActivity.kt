@@ -10,12 +10,12 @@ import com.example.cryptowallet.Fragments.HomeFragment
 import com.example.cryptowallet.Fragments.ProfileFragment
 import com.example.cryptowallet.Fragments.SavedCoinsFragment
 import com.example.cryptowallet.databinding.ActivityMainBinding
+import com.shashank.sony.fancytoastlib.FancyToast
 
 class MainActivity : AppCompatActivity() {
     val binding by lazy{
         ActivityMainBinding.inflate(layoutInflater)
     }
-
 
     override fun onBackPressed() {
         finishAffinity()
@@ -28,10 +28,17 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar!!.hide()
         if(Tufel.isOnline(this@MainActivity)){
+            FancyToast.makeText(
+                this@MainActivity, "Online", FancyToast.LENGTH_SHORT,
+                FancyToast.SUCCESS, false
+            ).show()
             binding.noInternetAnimationHome.visibility = View.VISIBLE
         }else{
             binding.noInternetAnimationHome.visibility = View.GONE
         }
+
+
+
 
         binding.txtHeading.text = getText(R.string.app_name)
         binding.imgLogoHeading.visibility = View.VISIBLE
@@ -39,11 +46,6 @@ class MainActivity : AppCompatActivity() {
 
 
         // By Default Home Fragement
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.mainContainer, HomeFragment())
-            .commit()
-
-
         changeFragments(HomeFragment())
 
         binding.bottomBar.setOnItemSelectedListener {pos ->

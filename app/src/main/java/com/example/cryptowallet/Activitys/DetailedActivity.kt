@@ -3,7 +3,6 @@ package com.example.cryptowallet.Activitys
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.lifecycleScope
@@ -81,13 +80,13 @@ class DetailedActivity : AppCompatActivity() {
                 withContext(Dispatchers.Main){
                     if(data != null){
                         binding.circularProgressBar.visibility = View.GONE
-                        setWatchListbuttonChecked()
+                        setWatchListbuttonChecked(data)
                         setButtonsOnClick(data)
                         loadChart(data)
-                        if(binding.cbWatchlistDet.callOnClick()){
-                                Toast.makeText(this@DetailedActivity,"Removed",Toast.LENGTH_SHORT).show()
-                                removeDataFromDB(data.id)
-                        }
+//                        if(binding.cbWatchlistDet.callOnClick()){
+//                                Toast.makeText(this@DetailedActivity,"Removed",Toast.LENGTH_SHORT).show()
+//                                removeDataFromDB(data.id)
+//                        }
                         binding.detailCoinFullName.text = data.name
                         binding.detailCoinShortName.text = data.symbol
                         Glide.with(this@DetailedActivity)
@@ -107,35 +106,29 @@ class DetailedActivity : AppCompatActivity() {
             }
         }
     }
+    private fun setWatchListbuttonChecked(coin: CryptoCurrency) {
+        val watchlistCheckbox = binding.cbWatchlistDet
+        db.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val savedCoinsIds = snapshot.children.mapNotNull { it.getValue(Long::class.java) }
+                val isCoinInWatchlist = savedCoinsIds.contains(coin.id)
+                watchlistCheckbox.isChecked = isCoinInWatchlist
 
-    private fun setWatchListbuttonChecked() {
-            db.addValueEventListener(object :
-                ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        val res = ApiUtilities.getInstace().create(ApiInterface::class.java)
-                            .getMarketData()
-                        coinList = ArrayList()
-                        withContext(Dispatchers.Main) {
-                            val apiDataList = res.body()?.data?.cryptoCurrencyList
-                            if (apiDataList != null) {
-                                for (snapshot1 in snapshot.children) {
-                                    val savedCoinsId = snapshot1.getValue(Long::class.java)
-                                    val matchingCoin = apiDataList.find { it.id == savedCoinsId }
-                                    matchingCoin?.let {
-                                        binding.cbWatchlistDet.isChecked = true
-                                    }
-                                }
-                            }
-                        }
+                watchlistCheckbox.setOnCheckedChangeListener { _, isChecked ->
+                    if (isChecked) {
+                        saveDataOnDB(coin.name, coin.id)
+                    } else {
+                        removeDataFromDB(coin.id)
                     }
                 }
+            }
 
-                override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
-                }
-            })
+            override fun onCancelled(error: DatabaseError) {
+                // Handle onCancelled if needed
+            }
+        })
     }
+
 
     private fun checkPriceUpOrDown(data: CryptoCurrency) {
         if(data.quotes[0].percentChange1h > 0){
@@ -212,6 +205,16 @@ class DetailedActivity : AppCompatActivity() {
          return "https://s.tradingview.com/widgetembed/?frameElementId=tradingview_76d87&symbol=${symbol}USD&interval=D&hidesidetoolbar=1&hidetoptoolbar=1&symboledit=1&saveimage=1&toolbarbg=F1F3F6&studies=[]&hideideas=1&theme=Dark&style=1&timezone=Etc%2FUTC&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]&locale=en&utm_source=coinmarketcap.com&utm_medium=widget&utm_campaign=chart&utm_term=BTCUSDT"
     }
 
+    private fun saveDataOnDB(name: String?, id: Long) {
+        auth = FirebaseAuth.getInstance()
+        db = FirebaseDatabase.getInstance().getReference("FavCoin").child(auth.currentUser!!.uid)
+
+        db.child(name!!)
+            .setValue(id)
+            .addOnCompleteListener {
+//                Toast.makeText(context, "$name Coin Saved", Toast.LENGTH_SHORT).show()
+            }
+    }
 
 }
 

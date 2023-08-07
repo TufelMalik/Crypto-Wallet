@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -15,7 +14,11 @@ import com.example.cryptowallet.Activitys.DetailedActivity
 import com.example.cryptowallet.DataClasses.CryptoCurrency
 import com.example.cryptowallet.R
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class CoinAdapter(
     private val context: Context,
@@ -63,6 +66,7 @@ class CoinAdapter(
         holder.coinName.text = item.name
         holder.coinSortName.text = item.symbol
         holder.coinLivePrice.text = item.quotes[0].price.toString()
+        holder.coinFavCB.isChecked = item.isChecked
         isCheckBoxIsSaved(item,holder.coinFavCB)
 
         holder.itemView.setOnClickListener {
@@ -96,27 +100,23 @@ class CoinAdapter(
     }
 
     private fun isCheckBoxIsSaved(data: CryptoCurrency, coinFavCB: CheckBox) {
-        auth = FirebaseAuth.getInstance()
-        db = FirebaseDatabase.getInstance().getReference("FavCoin").child(auth.currentUser!!.uid)
-
-        db.addListenerForSingleValueEvent(object : ValueEventListener{
+        val auth = FirebaseAuth.getInstance()
+        val db = FirebaseDatabase.getInstance().getReference("FavCoin").child(auth.currentUser!!.uid)
+        db.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val savedCoins = ArrayList<Long>()
-                for(snap in snapshot.children){
+                for (snap in snapshot.children) {
                     val savedCoinsId = snap.getValue(Long::class.java)
-                    savedCoins.add(savedCoinsId!!)
+                    savedCoinsId?.let { savedCoins.add(it) }
                 }
-                if(data.id == savedCoins.get(0)){
-                   coinFavCB.isChecked= true
+                if (savedCoins.contains(data.id)) {
+                    coinFavCB.isChecked = true
                 }
-
-                Log.d("CoinAdapter","Matched Coin is Check Now : $savedCoins")
+                Log.d("CoinAdapter", "Matched Coin is Checked Now : $savedCoins")
             }
             override fun onCancelled(error: DatabaseError) {
-                Log.d("CoinAdapter",error.toString())
-
+                Log.d("CoinAdapter", error.toString())
             }
-
         })
     }
 
@@ -156,7 +156,6 @@ class CoinAdapter(
                     }
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
                 // Handle onCancelled if needed
             }

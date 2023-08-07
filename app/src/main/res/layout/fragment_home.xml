@@ -30,6 +30,7 @@
                 android:id="@+id/searchViewHome"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
+                android:inputType="textPersonName"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="20dp"
@@ -37,7 +38,7 @@
                 android:backgroundTint="@color/purple_700"
                 android:clickable="true"
                 android:drawableLeft="@drawable/baseline_search_24"
-                android:hint="  Search Coins"
+                android:hint="@string/search_coins"
                 android:maxLines="1"
                 android:outlineAmbientShadowColor="@color/white"
                 android:paddingLeft="20dp"
@@ -46,7 +47,8 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="TouchTargetSizeCheck" />
+                tools:ignore="TouchTargetSizeCheck"
+                android:focusable="true" />
 
 
             <androidx.cardview.widget.CardView
@@ -67,6 +69,8 @@
                     android:layout_height="162dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/banner5" />
+
+
 
             </androidx.cardview.widget.CardView>
 

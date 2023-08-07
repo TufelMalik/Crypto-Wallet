@@ -7,6 +7,7 @@
     tools:context=".Activitys.FavCoinActivity">
 
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/favCoinRV"
         tools:listitem="@layout/fav_coins_layout"

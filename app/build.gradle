@@ -86,6 +86,12 @@ dependencies {
     // CircleImageView
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
+    //Custome Toast
+    implementation 'io.github.shashank02051997:FancyToast:2.0.2'
+
+    //ImageSlider
+    implementation 'com.github.denzcoskun:ImageSlideshow:0.1.0'
+
     // Navigation Components
     implementation 'androidx.navigation:navigation-fragment-ktx:2.6.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.6.0'

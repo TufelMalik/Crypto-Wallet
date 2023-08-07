@@ -21,4 +21,5 @@
     <string name="Saved">Saved Coins</string>
     <string name="saved_coins">Saved Coins</string>
     <string name="coin_not_found">Coin Not Found !</string>
+    <string name="search_coins">Search Coins</string>
 </resources>

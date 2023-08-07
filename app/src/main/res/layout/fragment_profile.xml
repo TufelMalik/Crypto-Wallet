@@ -43,7 +43,7 @@
                             android:id="@+id/userImg_profile"
                             android:layout_width="94dp"
                             android:layout_height="94dp"
-                            android:src="@drawable/person"
+                            android:src="@drawable/profile_person_img"
                             app:civ_border_color="@color/white"
                             app:civ_border_width="2dp"
                             app:layout_constraintBottom_toBottomOf="parent"

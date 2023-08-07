@@ -1,5 +1,6 @@
 package com.example.cryptowallet.Fragments
 
+
 import CoinAdapter
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -24,11 +25,11 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.shashank.sony.fancytoastlib.FancyToast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Locale
-
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var auth : FirebaseAuth
@@ -36,7 +37,6 @@ class HomeFragment : Fragment() {
     private lateinit var userId : String
     private lateinit var adapter : CoinAdapter
     private lateinit var dataList: List<CryptoCurrency>
-
 
 
     override fun onCreateView(
@@ -121,16 +121,26 @@ class HomeFragment : Fragment() {
         }
     }
 
+
     private fun checkInternet() {
-        if(Tufel.isOnline(requireContext())){
-            binding.notFoundAnimationHome.visibility = View.GONE
-            callApiGetData()
-            searchCoinFromList()
-        }else{
-            val animationView = binding.notFoundAnimationHome
-            binding.homeBanner.visibility = View.GONE
-            val offlineAnimationResId = R.raw.no_internet
-            updateLottieAnimation(animationView, offlineAnimationResId)
+        try {
+            if (Tufel.isOnline(requireContext())) {
+                binding.notFoundAnimationHome.visibility = View.GONE
+                callApiGetData()
+                searchCoinFromList()
+            } else {
+                FancyToast.makeText(
+                    requireContext(), "Offline", FancyToast.LENGTH_SHORT,
+                    FancyToast.ERROR, false
+                ).show()
+                val animationView = binding.notFoundAnimationHome
+                binding.homeBanner.visibility = View.GONE
+                val offlineAnimationResId = R.raw.no_internet
+                updateLottieAnimation(animationView, offlineAnimationResId)
+            }
+        }catch (e : Exception){
+            FancyToast.makeText(requireContext(),"Something went wrong !!!",FancyToast.LENGTH_SHORT,
+                FancyToast.ERROR,false).show()
         }
     }
 

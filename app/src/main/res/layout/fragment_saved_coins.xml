@@ -7,6 +7,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragments.SavedCoinsFragment">
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/item_not_found_animation_favcoins"
+        android:layout_width="305dp"
+        android:layout_height="379dp"
+        android:foregroundGravity="center"
+        android:layout_marginTop="168dp"
+        android:layout_marginLeft="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/no_items_found" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/savedCoinsRecyclerView"
         android:layout_width="match_parent"
