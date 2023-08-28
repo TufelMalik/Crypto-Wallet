@@ -8,7 +8,7 @@
     android:background="@color/black"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -23,26 +23,44 @@
             android:id="@+id/imgLogoHeading"
             android:layout_width="45dp"
             android:layout_height="45dp"
+            android:layout_gravity="center"
             android:src="@drawable/cyrpto_logo"
             app:civ_border_color="@color/purple_700"
             app:civ_border_width="2dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="15dp"
-            />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5" />
+
         <TextView
             android:id="@+id/txtHeading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/amethysta"
             android:text="@string/app_name"
             android:textColor="@color/white"
             android:textSize="25dp"
-            android:fontFamily="@font/amethysta"
+            android:layout_marginLeft="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imgLogoHeading"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5" />
+
+        <ImageView
+            android:id="@+id/btnFilterData"
+            android:layout_width="25dp"
+            android:layout_height="34dp"
             android:layout_gravity="center"
-            android:layout_marginLeft="15dp"
+            android:background="@drawable/ic_filter"
+            android:backgroundTint="@color/white"
+            android:layout_marginRight="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5" />
 
-            />
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/noInternet_animation_home"

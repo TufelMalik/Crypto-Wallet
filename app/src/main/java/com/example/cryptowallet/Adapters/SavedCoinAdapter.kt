@@ -12,7 +12,10 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cryptowallet.Activitys.DetailedActivity
+import com.example.cryptowallet.Classes.Tufel
+import com.example.cryptowallet.Classes.Tufel.unSaveCointoDB
 import com.example.cryptowallet.DataClasses.CryptoCurrency
+import com.example.cryptowallet.DataClasses.SaveCoinsModel
 import com.example.cryptowallet.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -20,6 +23,7 @@ import com.google.firebase.database.*
 class SavedCoinAdapter(
     private val context: Context,
     private var coinList: List<CryptoCurrency>,
+    private var savedTimeStamp: SaveCoinsModel,
 ) :
     RecyclerView.Adapter<SavedCoinAdapter.SavedCoinViewHolder>() {
     private lateinit var auth: FirebaseAuth
@@ -29,6 +33,7 @@ class SavedCoinAdapter(
         val coinImg: ImageView = itemView.findViewById(R.id.imgCoinImageFav_layout)
         val coinName: TextView = itemView.findViewById(R.id.txtCoinName_Layout)
         val coinLivePrice: TextView = itemView.findViewById(R.id.txtCoinPrice_layout)
+        val coinSavedDate: TextView = itemView.findViewById(R.id.txtSavedDate_layout)
         val coinFavCB: CheckBox = itemView.findViewById(R.id.cbFav_layout)
         val webView : WebView = itemView.findViewById(R.id.detaillChartWebView)
         val detailChangeImageView : ImageView = itemView.findViewById(R.id.detailChangeImageView)
@@ -40,9 +45,8 @@ class SavedCoinAdapter(
                 if (position != RecyclerView.NO_POSITION) {
                     val item = coinList[position]
                     item.isChecked = true
-
                   if(!isChecked){
-                        removeDataFromDB(item.id)
+                      unSaveCointoDB(item.name!!)
                     }
                 }
             }
@@ -62,6 +66,7 @@ class SavedCoinAdapter(
         holder.coinName.text = item.name
         holder.coinLivePrice.text = item.quotes[0].price.toString()
         holder.coinFavCB.isChecked = true
+        holder.coinSavedDate.text = savedTimeStamp.timeStamp
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, DetailedActivity::class.java)
@@ -116,24 +121,4 @@ class SavedCoinAdapter(
     }
 
 
-
-    private fun removeDataFromDB(id: Long) {
-        auth = FirebaseAuth.getInstance()
-        db = FirebaseDatabase.getInstance().getReference("FavCoin").child(auth.currentUser!!.uid)
-
-        db.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                for (id1 in snapshot.children) {
-                    val data = id1.getValue(Int::class.java)
-                    if (data!!.toLong() == id) {
-                        id1.ref.removeValue()
-                    }
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // Handle onCancelled if needed
-            }
-        })
-    }
 }

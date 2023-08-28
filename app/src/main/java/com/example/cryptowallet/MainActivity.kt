@@ -54,18 +54,21 @@ class MainActivity : AppCompatActivity() {
                     changeFragments(HomeFragment())
                     binding.txtHeading.text = getText(R.string.app_name)
                     binding.imgLogoHeading.visibility = View.VISIBLE
+                    binding.btnFilterData.visibility = View.GONE
                     binding.txtHeading.setTextColor(ContextCompat.getColor(this, R.color.gold))
                 }
                 1 -> {
                     changeFragments(SavedCoinsFragment())
                     binding.imgLogoHeading.visibility = View.GONE
                     binding.txtHeading.text = getString(R.string.saved_coins)
+                    binding.btnFilterData.visibility = View.VISIBLE
                     binding.txtHeading.setTextColor(ContextCompat.getColor(this, R.color.white))
                 }
                 else -> {
                     changeFragments(ProfileFragment())
                     binding.imgLogoHeading.visibility = View.GONE
                     binding.txtHeading.text =getString(R.string.profile)
+                    binding.btnFilterData.visibility = View.GONE
                     binding.txtHeading.setTextColor(ContextCompat.getColor(this, R.color.white))
                 }
             }

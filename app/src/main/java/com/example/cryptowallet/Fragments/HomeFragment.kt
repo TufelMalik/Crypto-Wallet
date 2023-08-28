@@ -1,35 +1,30 @@
 package com.example.cryptowallet.Fragments
 
 
-import CoinAdapter
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.*
-import android.widget.Toast
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.airbnb.lottie.LottieAnimationView
 import com.example.cryptowallet.API.ApiInterface
 import com.example.cryptowallet.API.ApiUtilities
-import com.example.cryptowallet.Classes.SharedPrefsHelper
 import com.example.cryptowallet.Classes.Tufel
 import com.example.cryptowallet.DataClasses.CryptoCurrency
 import com.example.cryptowallet.R
 import com.example.cryptowallet.databinding.FragmentHomeBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.shashank.sony.fancytoastlib.FancyToast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Locale
+
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var auth : FirebaseAuth
@@ -106,7 +101,6 @@ class HomeFragment : Fragment() {
                 if (dataList != null) {
                     binding.homeRecyclerView.setBackgroundColor(resources.getColor(R.color.black))
                     binding.homeProgressBar.visibility = View.GONE
-
                     adapter = CoinAdapter(requireContext(), dataList)
                     binding.homeRecyclerView.adapter = adapter
                     Log.d("Tufel", dataList.toString())
@@ -117,7 +111,6 @@ class HomeFragment : Fragment() {
                     )
                 }
             }
-
         }
     }
 
@@ -149,7 +142,7 @@ class HomeFragment : Fragment() {
         animationView.setAnimation(rawResId)
         animationView.playAnimation()
         binding.txtResult.visibility = View.VISIBLE
-        binding.txtResult.text= "No Internet"
+        binding.txtResult.text= getString(R.string.no_internet)
         binding.notFoundAnimationHome.visibility = View.VISIBLE
     }
     override fun onResume() {

@@ -1,14 +1,13 @@
 package com.example.cryptowallet.Activitys
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.example.cryptowallet.DataClasses.Users
 import com.example.cryptowallet.MainActivity
-import com.example.cryptowallet.R
 import com.example.cryptowallet.databinding.ActivityRegistrationBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -17,17 +16,12 @@ class RegistrationActivity : AppCompatActivity() {
     val binding by lazy{
         ActivityRegistrationBinding.inflate(layoutInflater)
     }
-
-
-    val users = Users()
-    val auth = FirebaseAuth.getInstance()
+    private val auth = FirebaseAuth.getInstance()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
-        binding.circularProgressBarReg.visibility = View.GONE
         supportActionBar?.hide()
         binding.btngotoLogin.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
@@ -41,7 +35,7 @@ class RegistrationActivity : AppCompatActivity() {
             } else if (binding.etNameReg.text.isEmpty()) {
                 binding.etPassReg.error = "Password"
             } else {
-                binding.circularProgressBarReg.visibility = View.VISIBLE
+                binding.regProgressBar.isVisible= true
                 registerTheUser()
             }
         }
@@ -60,17 +54,17 @@ class RegistrationActivity : AppCompatActivity() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     addUserDataOnDB(name,email,pass)
-                    binding.circularProgressBarReg.visibility = View.GONE
+                    binding.regProgressBar.isVisible= false
                     startActivity(Intent(this@RegistrationActivity, MainActivity::class.java))
                 } else {
-                    binding.circularProgressBarReg.visibility = View.GONE
+                    binding.regProgressBar.isVisible= false
                     Toast.makeText(this@RegistrationActivity, "Something Went Wrong !!!", Toast.LENGTH_SHORT).show()
                 }
             }
             .addOnFailureListener { exception ->
                 Toast.makeText(this@RegistrationActivity, "Registration Failed.\nPleas try again later...: ${exception.message}", Toast.LENGTH_SHORT).show()
                 Log.e("Firebase", "Failed to save data", exception)
-                binding.circularProgressBarReg.visibility = View.GONE
+                binding.regProgressBar.isVisible= false
 
             }
 
@@ -86,11 +80,11 @@ class RegistrationActivity : AppCompatActivity() {
         database.child(auth.uid.toString()).setValue(user)
             .addOnSuccessListener {
                 Toast.makeText(this@RegistrationActivity, "Registration Successfully done.", Toast.LENGTH_SHORT).show()
-                binding.circularProgressBarReg.visibility = View.GONE
+                binding.regProgressBar.isVisible= false
             }
             .addOnFailureListener {
                 Toast.makeText(this@RegistrationActivity, "Registration Failed.\nPlease try again later...", Toast.LENGTH_SHORT).show()
-                binding.circularProgressBarReg.visibility = View.GONE
+                binding.regProgressBar.isVisible= false
             }
     }
 

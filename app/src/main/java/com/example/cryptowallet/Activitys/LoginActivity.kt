@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.example.cryptowallet.MainActivity
 import com.example.cryptowallet.databinding.ActivityLoginBinding
 
@@ -42,7 +43,7 @@ LoginActivity : AppCompatActivity() {
             } else if (binding.etPassLogin.text.isEmpty()) {
                 binding.etPassLogin.error = "Enter Password"
             }else {
-                binding.progressBarLogin.visibility = View.VISIBLE
+                binding.progressBarLogin.isVisible = true
                 loginTheUser()
             }
         }
@@ -60,19 +61,16 @@ LoginActivity : AppCompatActivity() {
 
         auth.signInWithEmailAndPassword(email,pass)
             .addOnCompleteListener {
-                if(it.isSuccessful){
-                    binding.progressBarLogin.visibility = View.GONE
-                    startActivity(Intent(this,MainActivity::class.java))
-                    Toast.makeText(this@LoginActivity, "Login Successfully...", Toast.LENGTH_SHORT).show()
-                }else{
-                    binding.progressBarLogin.visibility = View.GONE
-
-                    Toast.makeText(this@LoginActivity, "You Don't have account\nPleas SignUp first !", Toast.LENGTH_SHORT).show()
+                if(it.isSuccessful) {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    binding.progressBarLogin.isVisible = false
+                    Toast.makeText(this@LoginActivity, "Login Successfully...", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
             .addOnFailureListener {
-                binding.progressBarLogin.visibility = View.GONE
-                Toast.makeText(this@LoginActivity, "Login Failed !!!", Toast.LENGTH_SHORT).show()
+                binding.progressBarLogin.isVisible = false
+                Toast.makeText(this@LoginActivity, "You Don't have account\nPleas SignUp first !", Toast.LENGTH_SHORT).show()
             }
     }
 

@@ -21,7 +21,7 @@
             android:name=".Activitys.Settings.OtherSettings"
             android:exported="false" />
         <activity
-            android:name=".Activitys.Settings.CurrencySettings"
+            android:name=".Activitys.Settings.HistoryActivity"
             android:exported="false" />
         <activity
             android:name=".Activitys.Settings.SecuritySettings"

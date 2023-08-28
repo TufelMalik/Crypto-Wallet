@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,7 +14,10 @@ import com.example.cryptowallet.API.ApiInterface
 import com.example.cryptowallet.API.ApiUtilities
 import com.example.cryptowallet.Classes.SharedPrefsHelper
 import com.example.cryptowallet.Classes.Tufel
+import com.example.cryptowallet.Classes.Tufel.isOnline
 import com.example.cryptowallet.DataClasses.CryptoCurrency
+import com.example.cryptowallet.DataClasses.SaveCoinsModel
+import com.example.cryptowallet.R
 import com.example.cryptowallet.databinding.FragmentSavedCoinsBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -31,18 +36,20 @@ class SavedCoinsFragment : Fragment() {
     private lateinit var userId : String
     private lateinit var sharedPrefsHelper: SharedPrefsHelper
     private lateinit var coinList : ArrayList<CryptoCurrency>
+    private lateinit var btnFilter : ImageView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSavedCoinsBinding.inflate(inflater, container, false)
 
+       // btnFilter = container!!.findViewById(R.id.btnFilterData)
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance()
         userId= auth.currentUser!!.uid
         sharedPrefsHelper = SharedPrefsHelper(requireContext())
         sharedPrefsHelper.setSelectedCoinIds(setOf())
-        if (Tufel.isOnline(requireContext())) {
+        if (isOnline(requireContext())) {
             getDataFromDB()
         }else{
             binding.itemNotFoundAnimationFavcoins.visibility=  View.VISIBLE
@@ -53,6 +60,8 @@ class SavedCoinsFragment : Fragment() {
 
          return binding.root
     }
+
+
     private fun getDataFromDB() {
         database.getReference("FavCoin").child(userId).addValueEventListener(object :
             ValueEventListener {
@@ -64,19 +73,19 @@ class SavedCoinsFragment : Fragment() {
                         val apiDataList = res.body()?.data?.cryptoCurrencyList
                         if (apiDataList != null) {
                             for (snapshot1 in snapshot.children) {
-                                val savedCoinsId = snapshot1.getValue(Long::class.java)
+                                val savedCoinsId = snapshot1.getValue(SaveCoinsModel::class.java)?.coinId
                                 val matchingCoin = apiDataList.find { it.id == savedCoinsId }
                                 matchingCoin?.let {
                                     coinList.add(it)
                                 }
                             }
-
+                            var time = SaveCoinsModel(coinList[0].id,coinList[0].name!!, Tufel.getCurrentDate())
                             if (coinList.isEmpty()) {
                                 binding.itemNotFoundAnimationFavcoins.visibility = View.VISIBLE
                             } else {
                                 binding.itemNotFoundAnimationFavcoins.visibility = View.GONE
                             }
-                            binding.savedCoinsRecyclerView.adapter = SavedCoinAdapter(context!!,coinList)
+                            binding.savedCoinsRecyclerView.adapter = SavedCoinAdapter(context!!,coinList,time)
                             binding.savedCoinsRecyclerView.layoutManager = LinearLayoutManager(context)
                         }
                     }

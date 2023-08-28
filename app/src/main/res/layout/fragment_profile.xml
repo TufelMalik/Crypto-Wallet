@@ -11,12 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        >
-
-
-
-        <!-- settings_activity.xml -->
-        <!-- settings_activity.xml -->
+    >
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -260,11 +255,11 @@
 
                 <!-- Currency Settings -->
                 <TextView
-                    android:id="@+id/idCurrecncySetting"
+                    android:id="@+id/idCoinHistorySetting"
                     android:fontFamily="@font/amethysta"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Currency Settings"
+                    android:text="History"
                     android:textSize="18sp"
                     android:paddingRight="20dp"
                     android:textStyle="bold"
@@ -279,16 +274,13 @@
                     android:layout_height="1dp"
                     android:background="#DADADA" />
 
-                <!-- Currency settings options -->
-                <!-- Add your currency settings options here -->
-
-                <!-- Other Settings -->
+                 <!-- Other Settings -->
                 <TextView
-                    android:id="@+id/idOtherSetting"
+                    android:id="@+id/idLogoutSetting"
                     android:layout_width="match_parent"
                     android:fontFamily="@font/amethysta"
                     android:layout_height="wrap_content"
-                    android:text="Other Settings"
+                    android:text="@string/log_out"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:paddingRight="20dp"

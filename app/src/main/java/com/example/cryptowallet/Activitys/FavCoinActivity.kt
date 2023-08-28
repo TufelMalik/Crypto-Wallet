@@ -1,10 +1,10 @@
 package com.example.cryptowallet.Activitys
 
-import CoinAdapter
+
+
 import SavedCoinAdapter
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.cryptowallet.API.ApiInterface
@@ -12,6 +12,7 @@ import com.example.cryptowallet.API.ApiUtilities
 import com.example.cryptowallet.Classes.SharedPrefsHelper
 import com.example.cryptowallet.Classes.Tufel
 import com.example.cryptowallet.DataClasses.CryptoCurrency
+import com.example.cryptowallet.Fragments.CoinAdapter
 import com.example.cryptowallet.databinding.ActivityFavCoinBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -49,7 +50,6 @@ class FavCoinActivity : AppCompatActivity() {
                 lifecycleScope.launch(Dispatchers.IO) {
                     val res = ApiUtilities.getInstace().create(ApiInterface::class.java).getMarketData()
                     coinList = ArrayList()
-
                     withContext(Dispatchers.Main) {
                         val apiDataList = res.body()?.data?.cryptoCurrencyList
 

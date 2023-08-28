@@ -1,3 +1,5 @@
+package com.example.cryptowallet.Fragments
+
 import android.content.Context
 import android.content.Intent
 import android.util.Log
@@ -11,6 +13,9 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cryptowallet.Activitys.DetailedActivity
+import com.example.cryptowallet.Classes.Tufel
+import com.example.cryptowallet.Classes.Tufel.saveFavCoinstoDB
+import com.example.cryptowallet.Classes.Tufel.unSaveCointoDB
 import com.example.cryptowallet.DataClasses.CryptoCurrency
 import com.example.cryptowallet.R
 import com.google.firebase.auth.FirebaseAuth
@@ -45,9 +50,9 @@ class CoinAdapter(
                     item.isChecked = isChecked
 
                     if (isChecked) {
-                        saveDataOnDB(item.name, item.id)
+                        saveFavCoinstoDB(item.name!!,item.id)
                     } else {
-                        removeDataFromDB(item.id)
+                        unSaveCointoDB(item.name!!)
                     }
                 }
             }
@@ -101,23 +106,29 @@ class CoinAdapter(
 
     private fun isCheckBoxIsSaved(data: CryptoCurrency, coinFavCB: CheckBox) {
         val auth = FirebaseAuth.getInstance()
-        val db = FirebaseDatabase.getInstance().getReference("FavCoin").child(auth.currentUser!!.uid)
-        db.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val savedCoins = ArrayList<Long>()
-                for (snap in snapshot.children) {
-                    val savedCoinsId = snap.getValue(Long::class.java)
-                    savedCoinsId?.let { savedCoins.add(it) }
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            val userId = currentUser.uid
+            val favCoinRef = FirebaseDatabase.getInstance().getReference("FavCoin").child(userId)
+            favCoinRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val savedCoins = ArrayList<Long>()
+                    for (snap in snapshot.children) {
+                        val savedCoinsId = snap.child("coinId").getValue(Long::class.java)
+                        savedCoinsId?.let { savedCoins.add(it) }
+                    }
+                    Log.d("CoinAdapter", "Saved Coins: $savedCoins")  // Debugging line
+                    if (savedCoins.contains(data.id)) {
+                        coinFavCB.isChecked = true
+                    }
+                    Log.d("CoinAdapter", "Matched Coin is Checked Now: $savedCoins")
                 }
-                if (savedCoins.contains(data.id)) {
-                    coinFavCB.isChecked = true
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("CoinAdapter", "Database error: $error")
                 }
-                Log.d("CoinAdapter", "Matched Coin is Checked Now : $savedCoins")
-            }
-            override fun onCancelled(error: DatabaseError) {
-                Log.d("CoinAdapter", error.toString())
-            }
-        })
+            })
+        }
     }
 
     fun updateCheckboxState(position: Int, isChecked: Boolean) {
@@ -132,33 +143,5 @@ class CoinAdapter(
         notifyDataSetChanged()
     }
 
-    private fun saveDataOnDB(name: String?, id: Long) {
-        auth = FirebaseAuth.getInstance()
-        db = FirebaseDatabase.getInstance().getReference("FavCoin").child(auth.currentUser!!.uid)
 
-        db.child(name!!)
-            .setValue(id)
-            .addOnCompleteListener {
-//                Toast.makeText(context, "$name Coin Saved", Toast.LENGTH_SHORT).show()
-            }
-    }
-
-    private fun removeDataFromDB(id: Long) {
-        auth = FirebaseAuth.getInstance()
-        db = FirebaseDatabase.getInstance().getReference("FavCoin").child(auth.currentUser!!.uid)
-
-        db.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                for (id1 in snapshot.children) {
-                    val data = id1.getValue(Int::class.java)
-                    if (data!!.toLong() == id) {
-                        id1.ref.removeValue()
-                    }
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {
-                // Handle onCancelled if needed
-            }
-        })
-    }
 }

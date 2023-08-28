@@ -22,4 +22,6 @@
     <string name="saved_coins">Saved Coins</string>
     <string name="coin_not_found">Coin Not Found !</string>
     <string name="search_coins">Search Coins</string>
+    <string name="log_out">Log Out</string>
+    <string name="no_internet">No Internet</string>
 </resources>
