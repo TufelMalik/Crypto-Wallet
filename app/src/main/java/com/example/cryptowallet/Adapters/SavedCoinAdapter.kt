@@ -26,9 +26,6 @@ class SavedCoinAdapter(
     private var savedTimeStamp: SaveCoinsModel,
 ) :
     RecyclerView.Adapter<SavedCoinAdapter.SavedCoinViewHolder>() {
-    private lateinit var auth: FirebaseAuth
-    private lateinit var db: DatabaseReference
-
     inner class SavedCoinViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val coinImg: ImageView = itemView.findViewById(R.id.imgCoinImageFav_layout)
         val coinName: TextView = itemView.findViewById(R.id.txtCoinName_Layout)

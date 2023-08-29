@@ -2,6 +2,7 @@ package com.example.cryptowallet.Fragments
 
 import SavedCoinAdapter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -79,21 +80,24 @@ class SavedCoinsFragment : Fragment() {
                                     coinList.add(it)
                                 }
                             }
-                            var time = SaveCoinsModel(coinList[0].id,coinList[0].name!!, Tufel.getCurrentDate())
+                          try{
                             if (coinList.isEmpty()) {
                                 binding.itemNotFoundAnimationFavcoins.visibility = View.VISIBLE
                             } else {
                                 binding.itemNotFoundAnimationFavcoins.visibility = View.GONE
                             }
+                            var time = SaveCoinsModel(coinList[0].id,coinList[0].name!!, Tufel.getCurrentDate())
                             binding.savedCoinsRecyclerView.adapter = SavedCoinAdapter(context!!,coinList,time)
                             binding.savedCoinsRecyclerView.layoutManager = LinearLayoutManager(context)
+                        }catch (e: Exception){
+                              binding.itemNotFoundAnimationFavcoins.visibility = View.VISIBLE
+                              Log.d("SavedCoinsFragment","Error is : "+ e.message.toString() )
+                          }
                         }
                     }
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
-
             }
         })
     }

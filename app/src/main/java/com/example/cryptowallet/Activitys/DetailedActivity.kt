@@ -104,7 +104,7 @@ class DetailedActivity : AppCompatActivity() {
                     savedCoinsId?.let { savedCoins.add(it) }
                 }
                 if (savedCoins.contains(coin.id)) {
-                    watchlistCheckbox.isChecked = true
+                    watchlistCheckbox.setBackgroundResource(R.drawable.bookmark_true)
                 }
                 watchlistCheckbox.setOnCheckedChangeListener { _, isChecked ->
                     if (isChecked) {

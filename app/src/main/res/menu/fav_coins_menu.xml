@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/idFav_coin_menu"
-        android:icon="@drawable/star_true"
+        android:icon="@drawable/bookmark_true"
         app:showAsAction="always"
         android:title="Favroit Coins"
         />
