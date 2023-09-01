@@ -26,7 +26,7 @@ class HistoryActivity : AppCompatActivity() {
     private lateinit var binding : ActivityHistoryActivityBinding
     private lateinit var adapter : SavedCoinAdapter
     private lateinit var dataList : List<CryptoCurrency>
-    @RequiresApi(Build.VERSION_CODES.O)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHistoryActivityBinding.inflate(layoutInflater)
@@ -40,9 +40,9 @@ class HistoryActivity : AppCompatActivity() {
         getDataFromApi()
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+
     private fun getDataFromApi() {
-        val currentTime = getCurrentDate()
+
         val time = SaveCoinsModel(dataList[0].id,dataList[0].name!!,getCurrentDate())
         lifecycleScope.launch(Dispatchers.IO) {
             val result = ApiUtilities.getInstace().create(ApiInterface::class.java)

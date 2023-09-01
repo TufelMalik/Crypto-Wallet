@@ -39,7 +39,6 @@ class DetailedActivity : AppCompatActivity() {
 
         supportActionBar!!.hide()
 
-
         val coinId = intent.getLongExtra("data", 1027)
         setUpDetails(coinId)
         binding.backStackButton.setOnClickListener {
@@ -47,6 +46,8 @@ class DetailedActivity : AppCompatActivity() {
         }
 
     }
+
+
 
     private fun setUpDetails(coinId: Long?) {
         if (coinId == null) {
@@ -108,7 +109,7 @@ class DetailedActivity : AppCompatActivity() {
                 }
                 watchlistCheckbox.setOnCheckedChangeListener { _, isChecked ->
                     if (isChecked) {
-                        saveFavCoinstoDB(coin.name!!, coin.id)
+                        saveFavCoinstoDB(binding.cbWatchlistDet, coin.name!!, coin.id)
                     } else {
                         unSaveCointoDB(coin.name!!)
                     }

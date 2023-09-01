@@ -7,13 +7,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 34
     namespace "com.example.cryptowallet"
 
 
     defaultConfig {
         minSdkVersion 26
-        targetSdkVersion 33
+        targetSdkVersion 34
         versionCode 1
         versionName "1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -41,7 +41,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.9.0'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.9.10'
 
     // Firebase
     implementation 'com.google.firebase:firebase-auth:22.1.1'
@@ -60,7 +60,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
     // Coroutine
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2'
 
     // Lifecycle
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
@@ -72,7 +72,6 @@ dependencies {
 
     // BottomBar
     implementation 'com.github.ibrahimsn98:SmoothBottomBar:1.7.9'
-
 
     // Image Slider
     implementation 'com.github.denzcoskun:ImageSlideshow:0.1.2'
@@ -86,17 +85,15 @@ dependencies {
     // CircleImageView
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
-    //Custome Toast
+    //Custom Toast
     implementation 'io.github.shashank02051997:FancyToast:2.0.2'
 
     //ImageSlider
-    implementation 'com.github.denzcoskun:ImageSlideshow:0.1.0'
+    implementation 'com.github.denzcoskun:ImageSlideshow:0.1.2'
 
     // Navigation Components
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.6.0'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.6.0'
-
-    def nav_version = "2.3.5" // Use the latest version available
-    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.7.1'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.7.1'
+    //implementation "androidx.navigation:navigation-fragment-ktx:2.7.1"
+    //implementation "androidx.navigation:navigation-ui-ktx:2.7.1"
 }

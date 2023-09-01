@@ -44,7 +44,7 @@ class SavedCoinsFragment : Fragment() {
     ): View {
         binding = FragmentSavedCoinsBinding.inflate(inflater, container, false)
 
-       // btnFilter = container!!.findViewById(R.id.btnFilterData)
+        // btnFilter = container!!.findViewById(R.id.btnFilterData)
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance()
         userId= auth.currentUser!!.uid
@@ -59,7 +59,7 @@ class SavedCoinsFragment : Fragment() {
         }
 
 
-         return binding.root
+        return binding.root
     }
 
 
@@ -73,26 +73,30 @@ class SavedCoinsFragment : Fragment() {
                     withContext(Dispatchers.Main) {
                         val apiDataList = res.body()?.data?.cryptoCurrencyList
                         if (apiDataList != null) {
+                            var savedTime = ""
                             for (snapshot1 in snapshot.children) {
+
+                                savedTime = snapshot1.getValue(SaveCoinsModel::class.java)!!.timeStamp
                                 val savedCoinsId = snapshot1.getValue(SaveCoinsModel::class.java)?.coinId
                                 val matchingCoin = apiDataList.find { it.id == savedCoinsId }
                                 matchingCoin?.let {
                                     coinList.add(it)
                                 }
                             }
-                          try{
-                            if (coinList.isEmpty()) {
+                            try{
+                                if (coinList.isNotEmpty()) {
+                                    binding.itemNotFoundAnimationFavcoins.visibility = View.GONE
+                                } else {
+                                    binding.itemNotFoundAnimationFavcoins.visibility = View.VISIBLE
+                                }
+
+                                var time = SaveCoinsModel(coinList[0].id,coinList[0].name!!, savedTime)
+                                binding.savedCoinsRecyclerView.adapter = SavedCoinAdapter(context!!,coinList,time)
+                                binding.savedCoinsRecyclerView.layoutManager = LinearLayoutManager(context)
+                            }catch (e: Exception){
                                 binding.itemNotFoundAnimationFavcoins.visibility = View.VISIBLE
-                            } else {
-                                binding.itemNotFoundAnimationFavcoins.visibility = View.GONE
+                                Log.d("SavedCoinsFragment","Error is : "+ e.message.toString() )
                             }
-                            var time = SaveCoinsModel(coinList[0].id,coinList[0].name!!, Tufel.getCurrentDate())
-                            binding.savedCoinsRecyclerView.adapter = SavedCoinAdapter(context!!,coinList,time)
-                            binding.savedCoinsRecyclerView.layoutManager = LinearLayoutManager(context)
-                        }catch (e: Exception){
-                              binding.itemNotFoundAnimationFavcoins.visibility = View.VISIBLE
-                              Log.d("SavedCoinsFragment","Error is : "+ e.message.toString() )
-                          }
                         }
                     }
                 }

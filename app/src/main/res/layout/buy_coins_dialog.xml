@@ -44,7 +44,7 @@
             android:focusedByDefault="true"
             android:hint="0000"
             android:maxLength="4"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="30dp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/btnSave_Dialog"
@@ -118,9 +118,9 @@
             android:layout_height="wrap_content"
             android:text="Qty :"
             app:layout_constraintBottom_toTopOf="@+id/etQty_Dialog"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/etQty_Dialog"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="@+id/etQty_Dialog" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

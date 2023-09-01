@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.cryptowallet.Classes.Tufel
 import com.example.cryptowallet.Fragments.HomeFragment
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         finishAffinity()
         super.onBackPressed()
@@ -27,6 +29,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar!!.hide()
+        binding.noInternetAnimationHome.isVisible = false
+        binding.btnFilterData.isVisible = false
         if(Tufel.isOnline(this@MainActivity)){
             FancyToast.makeText(
                 this@MainActivity, "Online", FancyToast.LENGTH_SHORT,

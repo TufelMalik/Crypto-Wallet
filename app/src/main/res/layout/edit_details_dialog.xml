@@ -68,7 +68,7 @@
             android:textColor="@color/black" />
 
         <Button
-            android:id="@+id/btnSave_Dialog"
+            android:id="@+id/btnDetial_Save_Dialog"
             android:layout_width="290dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"

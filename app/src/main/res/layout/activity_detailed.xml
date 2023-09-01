@@ -295,7 +295,7 @@
                     android:textSize="17dp" />
 
                 <TextView
-                    android:id="@+id/button7"
+                    android:id="@+id/btnBuyCoin"
                     android:layout_width="0dp"
                     android:layout_margin="11dp"
                     android:layout_height="wrap_content"

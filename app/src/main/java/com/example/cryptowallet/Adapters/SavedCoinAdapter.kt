@@ -12,13 +12,10 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cryptowallet.Activitys.DetailedActivity
-import com.example.cryptowallet.Classes.Tufel
 import com.example.cryptowallet.Classes.Tufel.unSaveCointoDB
 import com.example.cryptowallet.DataClasses.CryptoCurrency
 import com.example.cryptowallet.DataClasses.SaveCoinsModel
 import com.example.cryptowallet.R
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
 
 class SavedCoinAdapter(
     private val context: Context,
@@ -94,28 +91,22 @@ class SavedCoinAdapter(
         }else{
             holder.detailChangeImageView.setImageResource(R.drawable.ic_caret_down)
         }
-      setWebView(item.symbol,item.id,holder.webView)
+        setWebView(item.symbol, holder.webView)
 
 
     }
 
-    private fun setWebView(symbol: String?, id: Long, webView : WebView) {
+    private fun setWebView(symbol: String?, webView: WebView) {
         webView.settings.javaScriptEnabled = true
         webView.setLayerType(View.LAYER_TYPE_SOFTWARE,null)
         webView.loadUrl(getChartUrl(symbol))
     }
 
     private fun getChartUrl(symbol: String?): String {
-       return "https://s.tradingview.com/widgetembed/?frameElementId=tradingview_76d87&symbol=${symbol}USD&interval=15&hidesidetoolbar=1&hidetoptoolbar=1&symboledit=1&saveimage=1&toolbarbg=F1F3F6&studies=[]&hideideas=1&theme=Dark&style=1&timezone=Etc%2FUTC&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]&locale=en&utm_source=coinmarketcap.com&utm_medium=widget&utm_campaign=chart&utm_term=BTCUSDT"
+        return "https://s.tradingview.com/widgetembed/?frameElementId=tradingview_76d87&symbol=${symbol}USD&interval=15&hidesidetoolbar=1&hidetoptoolbar=1&symboledit=1&saveimage=1&toolbarbg=F1F3F6&studies=[]&hideideas=1&theme=Dark&style=1&timezone=Etc%2FUTC&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]&locale=en&utm_source=coinmarketcap.com&utm_medium=widget&utm_campaign=chart&utm_term=BTCUSDT"
 
     }
 
     override fun getItemCount() = coinList.size
-
-    fun updateData(data: List<CryptoCurrency>) {
-        coinList = data
-        notifyDataSetChanged()
-    }
-
 
 }

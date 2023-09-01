@@ -13,9 +13,11 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cryptowallet.Activitys.DetailedActivity
+import com.example.cryptowallet.Classes.Tufel.getCurrentDate
 import com.example.cryptowallet.Classes.Tufel.saveFavCoinstoDB
 import com.example.cryptowallet.Classes.Tufel.unSaveCointoDB
 import com.example.cryptowallet.DataClasses.CryptoCurrency
+import com.example.cryptowallet.DataClasses.SaveCoinsModel
 import com.example.cryptowallet.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -46,7 +48,7 @@ class CoinAdapter(
                     item.isChecked = isChecked
 
                     if (isChecked) {
-                        saveFavCoinstoDB(item.name!!,item.id)
+                        saveFavCoinstoDB(coinFavCB,item.name!!,item.id)
                     } else {
                         unSaveCointoDB(item.name!!)
                     }
@@ -100,10 +102,11 @@ class CoinAdapter(
             .into(holder.coinChangePrice)
     }
 
-    private fun isCheckBoxIsSaved(data: CryptoCurrency, coinFavCB: CheckBox) {
+        private fun isCheckBoxIsSaved(data: CryptoCurrency, coinFavCB: CheckBox) {
         val auth = FirebaseAuth.getInstance()
         val currentUser = auth.currentUser
         if (currentUser != null) {
+            var savedTime = ""
             val userId = currentUser.uid
             val favCoinRef = FirebaseDatabase.getInstance().getReference("FavCoin").child(userId)
             favCoinRef.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -111,15 +114,16 @@ class CoinAdapter(
                     val savedCoins = ArrayList<Long>()
                     for (snap in snapshot.children) {
                         val savedCoinsId = snap.child("coinId").getValue(Long::class.java)
+                        savedTime = snap.child("timeStamp").getValue(String::class.java).toString()
                         savedCoinsId?.let { savedCoins.add(it) }
                     }
-                    Log.d("CoinAdapter", "Saved Coins: $savedCoins")  // Debugging line
+                    Log.d("CoinAdapter", "Saved Coins: $savedCoins")
                     if (savedCoins.contains(data.id)) {
-                        coinFavCB.setBackgroundResource(R.drawable.bookmark_true)
+                         coinFavCB.isChecked = true
+
                     }
                     Log.d("CoinAdapter", "Matched Coin is Checked Now: $savedCoins")
                 }
-
                 override fun onCancelled(error: DatabaseError) {
                     Log.e("CoinAdapter", "Database error: $error")
                 }
@@ -127,10 +131,7 @@ class CoinAdapter(
         }
     }
 
-    fun updateCheckboxState(position: Int, isChecked: Boolean) {
-        coinList[position].isChecked = isChecked
-        notifyItemChanged(position)
-    }
+
 
     override fun getItemCount() = coinList.size
 
