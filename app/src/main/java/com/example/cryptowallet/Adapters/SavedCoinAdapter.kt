@@ -20,7 +20,7 @@ import com.example.cryptowallet.R
 class SavedCoinAdapter(
     private val context: Context,
     private var coinList: List<CryptoCurrency>,
-    private var savedTimeStamp: SaveCoinsModel,
+    private var savedTimeStamp: List<SaveCoinsModel>,
 ) :
     RecyclerView.Adapter<SavedCoinAdapter.SavedCoinViewHolder>() {
     inner class SavedCoinViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -60,7 +60,7 @@ class SavedCoinAdapter(
         holder.coinName.text = item.name
         holder.coinLivePrice.text = item.quotes[0].price.toString()
         holder.coinFavCB.isChecked = true
-        holder.coinSavedDate.text = savedTimeStamp.timeStamp
+        holder.coinSavedDate.text = savedTimeStamp[position].timeStamp
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, DetailedActivity::class.java)

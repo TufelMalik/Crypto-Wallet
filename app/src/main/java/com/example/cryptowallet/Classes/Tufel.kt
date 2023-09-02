@@ -75,14 +75,12 @@ object Tufel {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val savedCoins = ArrayList<Long>()
                 val savedTimeMap = HashMap<Long, String>()
-
                 for (snap in snapshot.children) {
                     val savedCoinsId = snap.child("coinId").getValue(Long::class.java)
                     val savedTime = snap.child("timeStamp").getValue(String::class.java) ?: ""
                     savedCoinsId?.let { savedCoins.add(it) }
                     savedTimeMap[savedCoinsId!!] = savedTime
                 }
-
                 if (savedCoins.contains(id)) {
                     val savedTime = savedTimeMap[id] ?: ""
 
@@ -92,11 +90,10 @@ object Tufel {
                         Log.d("CoinAdapter", "False : $coinValue")
                     } else {
                         val time = SaveCoinsModel(id, name, currentTime)
-                        db.child(name).setValue(time) // Update the timestamp
+                        db.child(name).setValue(time)
                         Log.d("CoinAdapter", "True : $time")
                     }
                 } else {
-                    // The coin is not saved, so save it with the current timestamp
                     val time = SaveCoinsModel(id, name, currentTime)
                     db.child(name).setValue(time)
                     Log.d("CoinAdapter", "New Entry: $time")

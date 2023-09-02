@@ -7,18 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cryptowallet.API.ApiInterface
 import com.example.cryptowallet.API.ApiUtilities
 import com.example.cryptowallet.Classes.SharedPrefsHelper
-import com.example.cryptowallet.Classes.Tufel
 import com.example.cryptowallet.Classes.Tufel.isOnline
 import com.example.cryptowallet.DataClasses.CryptoCurrency
 import com.example.cryptowallet.DataClasses.SaveCoinsModel
-import com.example.cryptowallet.R
 import com.example.cryptowallet.databinding.FragmentSavedCoinsBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -62,7 +59,6 @@ class SavedCoinsFragment : Fragment() {
         return binding.root
     }
 
-
     private fun getDataFromDB() {
         database.getReference("FavCoin").child(userId).addValueEventListener(object :
             ValueEventListener {
@@ -70,37 +66,41 @@ class SavedCoinsFragment : Fragment() {
                 lifecycleScope.launch(Dispatchers.IO) {
                     val res = ApiUtilities.getInstace().create(ApiInterface::class.java).getMarketData()
                     coinList = ArrayList()
+                    val savedCoinsList = ArrayList<SaveCoinsModel>()
                     withContext(Dispatchers.Main) {
                         val apiDataList = res.body()?.data?.cryptoCurrencyList
                         if (apiDataList != null) {
-                            var savedTime = ""
                             for (snapshot1 in snapshot.children) {
-
-                                savedTime = snapshot1.getValue(SaveCoinsModel::class.java)!!.timeStamp
+                                val savedTime = snapshot1.child("timeStamp").getValue(String::class.java) ?: ""
                                 val savedCoinsId = snapshot1.getValue(SaveCoinsModel::class.java)?.coinId
                                 val matchingCoin = apiDataList.find { it.id == savedCoinsId }
-                                matchingCoin?.let {
-                                    coinList.add(it)
-                                }
+                                matchingCoin?.let { coinList.add(it) }
+                                val saveCoinsModel = SaveCoinsModel(
+                                    coinId = savedCoinsId!!,
+                                    coinName = matchingCoin?.name ?: "",
+                                    timeStamp = savedTime
+                                )
+                                savedCoinsList.add(saveCoinsModel)
                             }
-                            try{
+                            Log.d("SavedCoinFragment", "\n\n\n\n\n\n\nvvn\n\n\nnn\n\n$savedCoinsList\n\n\n\n\n\n\nn\n\nnfghf\n")
+                            try {
                                 if (coinList.isNotEmpty()) {
                                     binding.itemNotFoundAnimationFavcoins.visibility = View.GONE
                                 } else {
                                     binding.itemNotFoundAnimationFavcoins.visibility = View.VISIBLE
                                 }
 
-                                var time = SaveCoinsModel(coinList[0].id,coinList[0].name!!, savedTime)
-                                binding.savedCoinsRecyclerView.adapter = SavedCoinAdapter(context!!,coinList,time)
+                                binding.savedCoinsRecyclerView.adapter = SavedCoinAdapter(context!!, coinList, savedCoinsList)
                                 binding.savedCoinsRecyclerView.layoutManager = LinearLayoutManager(context)
-                            }catch (e: Exception){
+                            } catch (e: Exception) {
                                 binding.itemNotFoundAnimationFavcoins.visibility = View.VISIBLE
-                                Log.d("SavedCoinsFragment","Error is : "+ e.message.toString() )
+                                Log.d("SavedCoinsFragment", "Error is : " + e.message.toString())
                             }
                         }
                     }
                 }
             }
+
             override fun onCancelled(error: DatabaseError) {
             }
         })
@@ -109,3 +109,58 @@ class SavedCoinsFragment : Fragment() {
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+//
+//private fun getDataFromDB() {
+//    database.getReference("FavCoin").child(userId).addValueEventListener(object :
+//        ValueEventListener {
+//        override fun onDataChange(snapshot: DataSnapshot) {
+//            lifecycleScope.launch(Dispatchers.IO) {
+//                val res = ApiUtilities.getInstace().create(ApiInterface::class.java).getMarketData()
+//                coinList = ArrayList()
+//                val savedTimeMap = ArrayList<String>()
+//                withContext(Dispatchers.Main) {
+//                    val apiDataList = res.body()?.data?.cryptoCurrencyList
+//                    if (apiDataList != null) {
+//                        for (snapshot1 in snapshot.children) {
+//                            val savedTime = snapshot1.child("timeStamp").getValue(String::class.java) ?: ""
+//                            val savedCoinsId = snapshot1.getValue(SaveCoinsModel::class.java)?.coinId
+//                            val matchingCoin = apiDataList.find { it.id == savedCoinsId }
+//                            matchingCoin?.let {coinList.add(it)}
+//                            savedTimeMap.add(savedTime)
+//                        }
+//                        Log.d("SavedCoinFragment","\n\n\n\n\n\n\nvvn\n\n\nnn\n\n$savedTimeMap\n\n\n\n\n\n\nn\n\nnfghf\n")
+//                        try{
+//                            if (coinList.isNotEmpty()) {
+//
+//                                binding.itemNotFoundAnimationFavcoins.visibility = View.GONE
+//                            } else {
+//                                binding.itemNotFoundAnimationFavcoins.visibility = View.VISIBLE
+//                            }
+//
+//                            val time = SaveCoinsModel(coinList[0].id,coinList[0].name!!,savedTimeMap[0])
+//                            Log.d("SavedCoinFragment","\n\n\n\n\n\n\nvvn\n\n\nnn\n\nSelection Time : $time\n\n\n\n\n\n\nn\n\nnfghf\n")
+//                            binding.savedCoinsRecyclerView.adapter = SavedCoinAdapter(context!!,coinList,time)
+//                            binding.savedCoinsRecyclerView.layoutManager = LinearLayoutManager(context)
+//                        }catch (e: Exception){
+//                            binding.itemNotFoundAnimationFavcoins.visibility = View.VISIBLE
+//                            Log.d("SavedCoinsFragment","Error is : "+ e.message.toString() )
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        override fun onCancelled(error: DatabaseError) {
+//        }
+//    })
+//}
