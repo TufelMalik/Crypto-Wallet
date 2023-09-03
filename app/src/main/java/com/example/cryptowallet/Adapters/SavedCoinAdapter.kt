@@ -78,7 +78,7 @@ class SavedCoinAdapter(
         holder.coinLivePrice.setTextColor(
             ContextCompat.getColor(
                 context,
-                if (percentChange1h > 0) R.color.green else R.color.red
+                if (percentChange1h > 0) R.color.lime else R.color.red
             )
         )
         holder.coinLivePrice.text =
@@ -105,6 +105,11 @@ class SavedCoinAdapter(
     private fun getChartUrl(symbol: String?): String {
         return "https://s.tradingview.com/widgetembed/?frameElementId=tradingview_76d87&symbol=${symbol}USD&interval=15&hidesidetoolbar=1&hidetoptoolbar=1&symboledit=1&saveimage=1&toolbarbg=F1F3F6&studies=[]&hideideas=1&theme=Dark&style=1&timezone=Etc%2FUTC&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]&locale=en&utm_source=coinmarketcap.com&utm_medium=widget&utm_campaign=chart&utm_term=BTCUSDT"
 
+    }
+
+    fun filterList(filtedData: List<CryptoCurrency>){
+        this.coinList = filtedData
+        notifyDataSetChanged()
     }
 
     override fun getItemCount() = coinList.size

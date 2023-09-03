@@ -1,9 +1,9 @@
 package com.example.cryptowallet.Activitys.Settings
 
 import SavedCoinAdapter
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.cryptowallet.API.ApiInterface
 import com.example.cryptowallet.API.ApiUtilities
@@ -11,7 +11,6 @@ import com.example.cryptowallet.Classes.Tufel
 import com.example.cryptowallet.Classes.Tufel.getCurrentDate
 import com.example.cryptowallet.DataClasses.CryptoCurrency
 import com.example.cryptowallet.DataClasses.SaveCoinsModel
-import com.example.cryptowallet.R
 import com.example.cryptowallet.databinding.ActivityHistoryActivityBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -44,7 +43,7 @@ class HistoryActivity : AppCompatActivity() {
             withContext(Dispatchers.Main) {
                 dataList = result.getMarketData().body()!!.data.cryptoCurrencyList
                 if (dataList != null) {
-                    adapter = SavedCoinAdapter(this@HistoryActivity, dataList, listOf(time))
+                    adapter = SavedCoinAdapter(this@HistoryActivity, dataList,time)
                     binding.historyRecyclerView.adapter = adapter
                     Log.d("Tufel", dataList.toString())
                     Tufel.setRVLayoutOrientationManger(

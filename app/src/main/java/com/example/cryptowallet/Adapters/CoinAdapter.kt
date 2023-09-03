@@ -13,11 +13,9 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cryptowallet.Activitys.DetailedActivity
-import com.example.cryptowallet.Classes.Tufel.getCurrentDate
 import com.example.cryptowallet.Classes.Tufel.saveFavCoinstoDB
 import com.example.cryptowallet.Classes.Tufel.unSaveCointoDB
 import com.example.cryptowallet.DataClasses.CryptoCurrency
-import com.example.cryptowallet.DataClasses.SaveCoinsModel
 import com.example.cryptowallet.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -87,7 +85,7 @@ class CoinAdapter(
         holder.coinLivePrice.setTextColor(
             ContextCompat.getColor(
                 context,
-                if (percentChange1h > 0) R.color.green else R.color.red
+                if (percentChange1h > 0) R.color.lime else R.color.red
             )
         )
         holder.coinLivePrice.text =

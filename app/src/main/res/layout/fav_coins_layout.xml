@@ -22,7 +22,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="350dp"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -110,7 +110,7 @@
                         android:maxLength="10"
                         android:text="Price"
                         android:textColor="@color/white"
-                        android:textSize="14sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -132,7 +132,7 @@
                 <WebView
                     android:id="@+id/detaillChartWebView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="220dp"
                     android:background="@color/white"
                     android:fontFamily="@font/amethysta"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -143,25 +143,32 @@
                     app:layout_constraintVertical_bias="0.5" />
 
 
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+
                 <TextView
                     android:id="@+id/txtSavedDate_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/purple_700"
-                    android:paddingRight="30dp"
-                    android:textColor="@color/white"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
                     android:fontFamily="@font/amethysta"
+                    android:paddingTop="10dp"
+                    android:gravity="center_horizontal"
+                    android:paddingRight="20dp"
+                    android:paddingLeft="20dp"
+                    android:paddingBottom="10dp"
                     android:text="2023-08-28"
-                    android:textAlignment="viewEnd"
-                    android:textSize="15dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/detaillChartWebView"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
