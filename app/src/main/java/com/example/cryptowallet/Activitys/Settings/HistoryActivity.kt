@@ -43,7 +43,7 @@ class HistoryActivity : AppCompatActivity() {
             withContext(Dispatchers.Main) {
                 dataList = result.getMarketData().body()!!.data.cryptoCurrencyList
                 if (dataList != null) {
-                    adapter = SavedCoinAdapter(this@HistoryActivity, dataList,time)
+                    adapter = SavedCoinAdapter(this@HistoryActivity, dataList, listOf(time))
                     binding.historyRecyclerView.adapter = adapter
                     Log.d("Tufel", dataList.toString())
                     Tufel.setRVLayoutOrientationManger(

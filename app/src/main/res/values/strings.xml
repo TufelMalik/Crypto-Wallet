@@ -24,4 +24,5 @@
     <string name="search_coins">Search Coins</string>
     <string name="log_out">Log Out</string>
     <string name="no_internet">No Internet</string>
+    <string name="app_verison">Verison 1.3</string>
 </resources>

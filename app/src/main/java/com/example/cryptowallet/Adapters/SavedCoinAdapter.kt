@@ -1,5 +1,6 @@
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +18,8 @@ import com.example.cryptowallet.DataClasses.CryptoCurrency
 import com.example.cryptowallet.DataClasses.SaveCoinsModel
 import com.example.cryptowallet.R
 
-class SavedCoinAdapter(
+class SavedCoinAdapter
+    (
     private val context: Context,
     private var coinList: List<CryptoCurrency>,
     private var savedTimeStamp: List<SaveCoinsModel>,
@@ -107,11 +109,17 @@ class SavedCoinAdapter(
 
     }
 
-    fun filterList(filtedData: List<CryptoCurrency>){
-        this.coinList = filtedData
-        notifyDataSetChanged()
-    }
 
     override fun getItemCount() = coinList.size
+
+    fun filterDataByDateTime(filterdList: List<SaveCoinsModel>) {
+        if (filterdList.isNotEmpty()) {
+            val a  = coinList.filter { it.id == filterdList[0].coinId }
+            coinList = a
+            Toast.makeText(context,"aa"+ a, Toast.LENGTH_SHORT).show()
+            Log.d("MainActivity","\n\n\n\n\nTufel ............>>> $a \n\n\n\n")
+            notifyDataSetChanged()
+        }
+    }
 
 }

@@ -4,7 +4,7 @@
         android:icon="@drawable/baseline_home_24"
         android:title="@string/home" />
     <item
-        android:id="@+id/tab_wallet"
+        android:id="@+id/tab_saved_coin"
         android:iconTint="@color/gold"
         android:icon="@drawable/bookmark_true"
         android:title="@string/Saved" />

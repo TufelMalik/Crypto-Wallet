@@ -83,7 +83,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:contentDescription="@string/app_name"
-        app:backgroundColor="@color/navy"
+        app:backgroundColor="@color/purple_700"
         app:cornerRadius="3dp"
         app:corners="all"
         app:iconSize="23dp"
@@ -94,7 +94,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottomnav"
-        app:textSize="12sp" />
+        app:textSize="12sp"/>
 
     <FrameLayout
         android:id="@+id/mainContainer"

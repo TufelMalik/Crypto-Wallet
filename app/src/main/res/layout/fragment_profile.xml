@@ -307,9 +307,8 @@
                     android:paddingStart="16dp"
                     android:paddingTop="24dp"
                     android:paddingBottom="8dp"
-                    android:text="Verison 1.0"
-                    android:textSize="15dp"
-                    tools:ignore="TextSizeCheck" />
+                    android:text="@string/app_verison"
+                    android:textSize="15dp" />
             </LinearLayout>
         </ScrollView>
 

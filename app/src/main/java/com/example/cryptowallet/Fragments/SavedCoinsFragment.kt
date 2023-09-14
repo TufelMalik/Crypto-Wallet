@@ -34,7 +34,6 @@ class SavedCoinsFragment : Fragment() {
     private lateinit var userId : String
     private lateinit var sharedPrefsHelper: SharedPrefsHelper
     private lateinit var coinList : ArrayList<CryptoCurrency>
-    private lateinit var btnFilter : ImageView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

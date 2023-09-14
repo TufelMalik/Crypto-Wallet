@@ -105,7 +105,7 @@ class DetailedActivity : AppCompatActivity() {
                     savedCoinsId?.let { savedCoins.add(it) }
                 }
                 if (savedCoins.contains(coin.id)) {
-                    watchlistCheckbox.setBackgroundResource(R.drawable.bookmark_true)
+                    watchlistCheckbox.isChecked = true
                 }
                 watchlistCheckbox.setOnCheckedChangeListener { _, isChecked ->
                     if (isChecked) {
@@ -191,8 +191,8 @@ class DetailedActivity : AppCompatActivity() {
         binding.detaillChartWebView.settings.javaScriptEnabled = true
         binding.detaillChartWebView.setLayerType(View.LAYER_TYPE_SOFTWARE,null)
         binding.detaillChartWebView.loadUrl(getChartUrl(coin.symbol))
-
     }
+
 
     private fun getChartUrl(symbol: String?): String {
          return "https://s.tradingview.com/widgetembed/?frameElementId=tradingview_76d87&symbol=${symbol}USD&interval=D&hidesidetoolbar=1&hidetoptoolbar=1&symboledit=1&saveimage=1&toolbarbg=F1F3F6&studies=[]&hideideas=1&theme=Dark&style=1&timezone=Etc%2FUTC&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]&locale=en&utm_source=coinmarketcap.com&utm_medium=widget&utm_campaign=chart&utm_term=BTCUSDT"
