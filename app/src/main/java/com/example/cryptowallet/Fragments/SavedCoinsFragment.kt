@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -70,14 +69,16 @@ class SavedCoinsFragment : Fragment() {
                         val apiDataList = res.body()?.data?.cryptoCurrencyList
                         if (apiDataList != null) {
                             for (snapshot1 in snapshot.children) {
-                                val savedTime = snapshot1.child("timeStamp").getValue(String::class.java) ?: ""
+                                val savedDate = snapshot1.child("date").getValue(String::class.java) ?: ""
+                                val savedTime = snapshot1.child("time").getValue(String::class.java) ?: ""
                                 val savedCoinsId = snapshot1.getValue(SaveCoinsModel::class.java)?.coinId
                                 val matchingCoin = apiDataList.find { it.id == savedCoinsId }
                                 matchingCoin?.let { coinList.add(it) }
                                 val saveCoinsModel = SaveCoinsModel(
                                     coinId = savedCoinsId!!,
                                     coinName = matchingCoin?.name ?: "",
-                                    timeStamp = savedTime
+                                    date =savedDate,
+                                    time = savedTime
                                 )
                                 savedCoinsList.add(saveCoinsModel)
                             }

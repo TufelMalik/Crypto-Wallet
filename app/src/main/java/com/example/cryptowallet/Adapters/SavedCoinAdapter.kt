@@ -26,10 +26,12 @@ class SavedCoinAdapter
 ) :
     RecyclerView.Adapter<SavedCoinAdapter.SavedCoinViewHolder>() {
     inner class SavedCoinViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var myCoinId :Long?= 0L
         val coinImg: ImageView = itemView.findViewById(R.id.imgCoinImageFav_layout)
         val coinName: TextView = itemView.findViewById(R.id.txtCoinName_Layout)
         val coinLivePrice: TextView = itemView.findViewById(R.id.txtCoinPrice_layout)
         val coinSavedDate: TextView = itemView.findViewById(R.id.txtSavedDate_layout)
+        val coinSavedTime: TextView = itemView.findViewById(R.id.txtSavedTime_layout)
         val coinFavCB: CheckBox = itemView.findViewById(R.id.cbFav_layout)
         val webView : WebView = itemView.findViewById(R.id.detaillChartWebView)
         val detailChangeImageView : ImageView = itemView.findViewById(R.id.detailChangeImageView)
@@ -58,11 +60,12 @@ class SavedCoinAdapter
 
     override fun onBindViewHolder(holder: SavedCoinViewHolder, position: Int) {
         val item = coinList[position]
-
+        holder.myCoinId = item.id
         holder.coinName.text = item.name
         holder.coinLivePrice.text = item.quotes[0].price.toString()
         holder.coinFavCB.isChecked = true
-        holder.coinSavedDate.text = savedTimeStamp[position].timeStamp
+        holder.coinSavedDate.text = savedTimeStamp[position].date
+        holder.coinSavedTime.text = savedTimeStamp[position].time
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, DetailedActivity::class.java)
@@ -114,11 +117,12 @@ class SavedCoinAdapter
 
     fun filterDataByDateTime(filterdList: List<SaveCoinsModel>) {
         if (filterdList.isNotEmpty()) {
-            val a  = coinList.filter { it.id == filterdList[0].coinId }
-            coinList = a
-            Toast.makeText(context,"aa"+ a, Toast.LENGTH_SHORT).show()
-            Log.d("MainActivity","\n\n\n\n\nTufel ............>>> $a \n\n\n\n")
+
+            coinList = coinList.filter { it.id == filterdList.get(0).coinId }
+            Log.d("Tufel","\n\n\n\n\nTufel ............>>> $filterdList \n\n\n\n")
             notifyDataSetChanged()
+        }else{
+
         }
     }
 

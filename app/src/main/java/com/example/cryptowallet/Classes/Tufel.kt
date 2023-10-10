@@ -15,28 +15,23 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import java.text.ParseException
-import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.Locale
-import java.util.Random
 
 object Tufel {
 
 
     private lateinit var auth: FirebaseAuth
     private lateinit var db: DatabaseReference
-    const val ONE_DAY_IN_MILLIS = 24 * 60 * 60 * 1000L // 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
 
 
-    fun getCurrentDate(): String {
+    fun getCurrentDate(): Pair<String,String> {
         val currentDateTime = LocalDateTime.now()
         val timeFormatter = DateTimeFormatter.ofPattern("h:mm a")
-        val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val time = currentDateTime.format(timeFormatter)
         val date = currentDateTime.format(dateFormatter)
-        return "$time            |             $date"
+       return Pair(time,date)
     }
 
     fun isOnline(context: Context): Boolean {
@@ -49,31 +44,33 @@ object Tufel {
     fun saveFavCoinstoDB(checkBox: CheckBox, name: String, id: Long) {
         auth = FirebaseAuth.getInstance()
         db = FirebaseDatabase.getInstance().getReference("FavCoin").child(auth.currentUser!!.uid)
-        val currentTime = getCurrentDate()
+        val currentTime = getCurrentDate().first
+        val currentDate = getCurrentDate().second
 
         db.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val savedCoins = ArrayList<Long>()
-                val savedTimeMap = HashMap<Long, String>()
+                val savedDateMap = HashMap<Long, String>()
 
                 for (snap in snapshot.children) {
                     val savedCoinsId = snap.child("coinId").getValue(Long::class.java)
-                    val savedTime = snap.child("timeStamp").getValue(String::class.java) ?: ""
+                    val savedDate = snap.child("date").getValue(String::class.java) ?: ""
                     savedCoinsId?.let { savedCoins.add(it) }
-                    savedTimeMap[savedCoinsId!!] = savedTime
+                    savedDateMap[savedCoinsId!!] = savedDate
                 }
 
                 if (savedCoins.contains(id)) {
-                    val savedTime = savedTimeMap[id] ?: ""
+                    val savedTime = savedDateMap[id] ?: ""
+                    val savedDate = savedDateMap[id] ?: ""
                     if (savedTime != currentTime) {
-                        val coinValue = SaveCoinsModel(id, name, savedTime)
+                        val coinValue = SaveCoinsModel(id, name, savedTime,savedDate)
                         db.child(name).setValue(coinValue)
                     } else {
-                        val time = SaveCoinsModel(id, name, currentTime)
-                        db.child(name).setValue(time)
+                        val dateTime = SaveCoinsModel(id, name, savedTime,savedDate)
+                        db.child(name).setValue(dateTime)
                     }
                 } else {
-                    val time = SaveCoinsModel(id, name, currentTime)
+                    val time = SaveCoinsModel(id, name, currentTime,currentDate)
                     db.child(name).setValue(time)
                 }
             }

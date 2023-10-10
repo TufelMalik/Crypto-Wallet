@@ -57,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="Sort By Time : "
+                android:text="Starting Date : "
                 android:textColor="@color/white"
                 android:textSize="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -69,7 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="132dp"
-                android:text="Sort By Date : "
+                android:text="Ending Date : "
                 android:textColor="@color/white"
                 android:textSize="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -78,69 +78,39 @@
                 app:layout_constraintTop_toBottomOf="@+id/view" />
 
             <TextView
-                android:id="@+id/sortByTimeStart"
-                android:layout_width="141dp"
-                android:layout_height="42dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="12dp"
-                android:ems="10"
-                android:gravity="center"
-                android:text="12 AM"
-                android:textAlignment="center"
-                android:textSize="19dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView18" />
-
-            <TextView
                 android:id="@+id/sortByDateStart"
-                android:layout_width="141dp"
+                android:layout_width="181dp"
                 android:layout_height="42dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:ems="10"
                 android:gravity="center"
                 android:text="----/--/--"
                 android:textAlignment="center"
-                android:textSize="19dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView21" />
-
-            <TextView
-                android:id="@+id/sortByTimeEnd"
-                android:layout_width="141dp"
-                android:layout_height="42dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="12dp"
-                android:ems="10"
-                android:gravity="center"
-                android:text="12 PM"
-                android:textAlignment="center"
-                android:textSize="19dp"
+                android:textSize="23dp"
+                app:layout_constraintBottom_toTopOf="@+id/textView21"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.567"
-                app:layout_constraintStart_toEndOf="@+id/sortByTimeStart"
-                app:layout_constraintTop_toBottomOf="@+id/textView18" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView18"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/sortByDateEnd"
-                android:layout_width="141dp"
+                android:layout_width="181dp"
                 android:layout_height="42dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="116dp"
+                android:layout_marginTop="8dp"
                 android:ems="10"
                 android:gravity="center"
                 android:text="----/--/--"
                 android:textAlignment="center"
-                android:textSize="19dp"
+                android:textSize="23dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.567"
-                app:layout_constraintStart_toEndOf="@+id/sortByTimeStart"
-                app:layout_constraintTop_toBottomOf="@+id/textView18" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
             <Button
                 android:id="@+id/btnFilterDialog"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_width="321dp"
+                android:layout_height="52dp"
                 android:layout_margin="20dp"
                 android:background="@drawable/corner"
                 android:backgroundTint="@color/white"

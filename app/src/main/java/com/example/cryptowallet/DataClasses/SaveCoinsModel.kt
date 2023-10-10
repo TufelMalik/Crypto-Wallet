@@ -2,8 +2,8 @@ package com.example.cryptowallet.DataClasses
 data class SaveCoinsModel(
     var coinId: Long,
     var coinName: String,
-    var timeStamp: String
+    var time : String,
+    var date : String
 ) {
-    // Add a public no-argument constructor
-    constructor() : this(0, "", "")
+     constructor() : this(0, "", "","")
 }

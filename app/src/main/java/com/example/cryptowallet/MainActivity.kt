@@ -14,7 +14,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.cryptowallet.Classes.Tufel
-import com.example.cryptowallet.DataClasses.CryptoCurrency
 import com.example.cryptowallet.DataClasses.SaveCoinsModel
 import com.example.cryptowallet.Fragments.HomeFragment
 import com.example.cryptowallet.Fragments.ProfileFragment
@@ -104,8 +103,6 @@ class MainActivity : AppCompatActivity() {
         val dialog = Dialog(this@MainActivity)
         val dialogView = layoutInflater.inflate(R.layout.filter_dialog, null)
         dialog.setContentView(dialogView)
-        val startTime: TextView = dialogView.findViewById(R.id.sortByTimeStart)
-        val endTime: TextView = dialogView.findViewById(R.id.sortByTimeEnd)
         val startDate: TextView = dialogView.findViewById(R.id.sortByDateStart)
         val endDate: TextView = dialogView.findViewById(R.id.sortByDateEnd)
         val btnFilter: Button = dialogView.findViewById(R.id.btnFilterDialog)
@@ -118,9 +115,8 @@ class MainActivity : AppCompatActivity() {
         }
         btnFilter.setOnClickListener {
             dialog.dismiss()
-            sortSavedCoinList()
+            sortSavedCoinList(startDate1,endDate1)
             dialog.setCancelable(true) // Dismiss the dialog
-            Toast.makeText(this@MainActivity, startDate1 + "    " + endDate1, Toast.LENGTH_SHORT).show()
             startDate1 = ""
             endDate1 = ""
         }
@@ -140,16 +136,16 @@ class MainActivity : AppCompatActivity() {
                     String.format(Locale.getDefault(), "%04d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDayOfMonth)
                 str.text = formattedDate
                 if (s.equals("s")) {
-                    startDate1 = str.text.toString()
+                    startDate1 = formattedDate
                 } else {
-                    endDate1 = str.text.toString()
+                    endDate1 = formattedDate
                 }
             }, year, month, dayOfMonth
         )
         datePicker.show()
     }
 
-    private fun sortSavedCoinList() {
+    private fun sortSavedCoinList(sDate: String, eDate: String) {
         val savedTimeList: ArrayList<SaveCoinsModel> = ArrayList()
         database = FirebaseDatabase.getInstance().getReference("FavCoin").child(auth.currentUser!!.uid)
         database.addValueEventListener(object : ValueEventListener {
@@ -160,18 +156,26 @@ class MainActivity : AppCompatActivity() {
                 }
                 val coinModel = mutableListOf<SaveCoinsModel>()
                 for (savedCoin in savedTimeList) {
-                    val extractedDate = extractDateFromTimestamp(savedCoin.timeStamp)
-                    coinModel.add(SaveCoinsModel(savedCoin.coinId, savedCoin.coinName, extractedDate))
+                    val extractedDate = savedCoin.date
+                    val extractedTime = savedCoin.time
+                    coinModel.add(SaveCoinsModel(savedCoin.coinId, savedCoin.coinName, extractedTime,extractedDate))
                 }
-                 val filteredCoins = coinModel.filter {
-                    val coinDate = it.timeStamp.trim() // Trim any extra whitespaces
-                    coinDate >= startDate1 && coinDate <= endDate1
+                val filteredCoins = coinModel.filter {
+                    val coinDate = it.date.trim() // Trim any extra whitespaces
+               //     Log.d("MainActivity","\n\n\n ............ \n\n\n CoinDate : $coinDate \n\n  ----- StrtDate : ${sDate} ------ EndDate : ${eDate} \n\n\n...Munnu...end\n\n\n\n")
+                    coinDate >= sDate && coinDate <= eDate
                 }
 
-                val adapter = SavedCoinAdapter(this@MainActivity, emptyList(), emptyList())
-                adapter.filterDataByDateTime(filteredCoins)
 
-                Log.d("MainActivity", "\n\n\n\n..\n\n\n\n\nData : $coinModel and also \n\n\n... $filteredCoins \n\n\n\n\n\n\n.\n\n\n\n")
+                if(filteredCoins.isNotEmpty()) {
+                    val adapter = SavedCoinAdapter(this@MainActivity, emptyList(), emptyList())
+                    adapter.filterDataByDateTime(
+                        filteredCoins.ifEmpty { emptyList() }
+                    )
+                    Log.d("MainActivity", "\n\n\n\n--->adapter ----\n\n $filteredCoins \n\n\n")
+                }else{
+                    Toast.makeText(this@MainActivity, "Coins Not Found!", Toast.LENGTH_SHORT).show()
+                }
             }
             override fun onCancelled(error: DatabaseError) {
                 Log.d("MainActivity", "Error is in MainActivity:  " + error.message.toString())
@@ -179,17 +183,6 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    fun extractDateFromTimestamp(timestamp: String): String {
-        val parts = timestamp.split("|")
-        if (parts.size == 2) {
-            val datePart = parts[1].trim()
-            return datePart
-            //Toast.makeText(this@MainActivity,"tufel : $datePart",Toast.LENGTH_SHORT).show()
-            //Log.d("MainActivity", "\n\n\n\n..\n\n\n\n\nTufel : $datePart and also \n\n\n... $datePart \n\n\n\n\n\n\n.\n\n\n\n")
-        }
-        return ""
-
-    }
 
 
     private fun changeFragments(frag: Fragment) {

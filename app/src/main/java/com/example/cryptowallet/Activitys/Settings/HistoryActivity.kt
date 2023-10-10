@@ -37,7 +37,9 @@ class HistoryActivity : AppCompatActivity() {
 
     private fun getDataFromApi() {
 
-        val time = SaveCoinsModel(dataList[0].id,dataList[0].name!!,getCurrentDate())
+        val time = SaveCoinsModel(
+            dataList[0].id,dataList[0].name!!,getCurrentDate().first,getCurrentDate().second
+        )
         lifecycleScope.launch(Dispatchers.IO) {
             val result = ApiUtilities.getInstace().create(ApiInterface::class.java)
             withContext(Dispatchers.Main) {
