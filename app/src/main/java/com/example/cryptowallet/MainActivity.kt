@@ -101,11 +101,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun filterSavedCoinList() {
         val dialog = Dialog(this@MainActivity)
-        val dialogView = layoutInflater.inflate(R.layout.filter_dialog, null)
+        val dialogView = layoutInflater.inflate(R.layout.filter_dialog,null)
         dialog.setContentView(dialogView)
         val startDate: TextView = dialogView.findViewById(R.id.sortByDateStart)
         val endDate: TextView = dialogView.findViewById(R.id.sortByDateEnd)
         val btnFilter: Button = dialogView.findViewById(R.id.btnFilterDialog)
+
+
 
         startDate.setOnClickListener {
             showDatePicker(startDate, "s")
@@ -162,7 +164,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 val filteredCoins = coinModel.filter {
                     val coinDate = it.date.trim() // Trim any extra whitespaces
-               //     Log.d("MainActivity","\n\n\n ............ \n\n\n CoinDate : $coinDate \n\n  ----- StrtDate : ${sDate} ------ EndDate : ${eDate} \n\n\n...Munnu...end\n\n\n\n")
+                    //     Log.d("MainActivity","\n\n\n ............ \n\n\n CoinDate : $coinDate \n\n  ----- StrtDate : ${sDate} ------ EndDate : ${eDate} \n\n\n...Munnu...end\n\n\n\n")
                     coinDate >= sDate && coinDate <= eDate
                 }
 

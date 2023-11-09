@@ -21,10 +21,12 @@ import com.example.cryptowallet.R
 class SavedCoinAdapter
     (
     private val context: Context,
-    private var coinList: List<CryptoCurrency>,
-    private var savedTimeStamp: List<SaveCoinsModel>,
+    private var coinList: List<CryptoCurrency> = emptyList(),
+    private var savedTimeStamp: List<SaveCoinsModel> = emptyList()
 ) :
     RecyclerView.Adapter<SavedCoinAdapter.SavedCoinViewHolder>() {
+
+
     inner class SavedCoinViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var myCoinId :Long?= 0L
         val coinImg: ImageView = itemView.findViewById(R.id.imgCoinImageFav_layout)
@@ -43,8 +45,8 @@ class SavedCoinAdapter
                 if (position != RecyclerView.NO_POSITION) {
                     val item = coinList[position]
                     item.isChecked = true
-                  if(!isChecked){
-                      unSaveCointoDB(item.name!!)
+                    if(!isChecked){
+                        unSaveCointoDB(item.name!!)
                     }
                 }
             }
@@ -116,14 +118,18 @@ class SavedCoinAdapter
     override fun getItemCount() = coinList.size
 
     fun filterDataByDateTime(filterdList: List<SaveCoinsModel>) {
-        if (filterdList.isNotEmpty()) {
+        Log.d("MMM", "\n\n Adapter Data : $filterdList \n\n\n\n")
 
-            coinList = coinList.filter { it.id == filterdList.get(0).coinId }
-            Log.d("Tufel","\n\n\n\n\nTufel ............>>> $filterdList \n\n\n\n")
-            notifyDataSetChanged()
-        }else{
-
+        val filteredCoinList = coinList.filter { coin ->
+            filterdList.any { it.coinId == coin.id }
         }
+
+        coinList = filteredCoinList
+
+        notifyDataSetChanged()
+        Log.d("MMM","\n\n\n\n\nAfter filtering  ............>>> $coinList \n\n\n\n")
+        Toast.makeText(context, "Called ...", Toast.LENGTH_LONG).show()
     }
+
 
 }
